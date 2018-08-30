@@ -51,6 +51,7 @@ button a {
   color: #fff;
 }
 
+input[type="submit"],
 button {
   background: #333;
   border-radius: 6px;
@@ -79,6 +80,7 @@ button:hover {
 /* Misc */
 
 a {
+  color: #2a9971;
   text-decoration: none;
 }
 
@@ -149,6 +151,40 @@ footer {
   display: flex;
   justify-content: space-between;
   padding: 15px 30px;
+}
+
+/* Wrapper */
+
+.wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+}
+
+
+.container {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Form Elements */
+
+form {
+  display: block;
+}
+
+input {
+  border: 1px solid #666;
+  border-radius: 6px;
+  display: block;
+  margin: 10px;
+  padding: 15px 30px;
+}
+
+input[type="submit"] {
+  width: calc(100% - 20px);
+  background: #1d6b4f;
 }
 
 /* Media Queries */
