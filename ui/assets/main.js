@@ -1,4 +1,4 @@
 // Responsive menu
-document.querySelector('.nav-right__mobile').onclick = function() {
-  document.querySelector('.nav-right ul').classList.toggle('open');
+document.querySelector('.nav-mobile').onclick = function() {
+  document.querySelector('nav ul').classList.toggle('open');
 }
