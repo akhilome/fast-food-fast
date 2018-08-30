@@ -9,7 +9,7 @@ body {
 
 /* Navigation */
 
-nav {
+header {
   align-items: center;
   display: flex;
   font-family: 'Comfortaa', cursive;
@@ -18,37 +18,31 @@ nav {
   text-transform: lowercase;
 }
 
-nav h2 a {
+.site-title a {
   color: #1d6b4f; 
   font-size: 1.8rem;
   letter-spacing: -2px;
 }
 
 nav a {
+  border-radius: 6px;
   color: #333;
+  padding: 8px 10px;
 }
 
 nav a:hover {
   color: #1d6b4f;
-}
-
-.nav-right a {
-  border-radius: 6px;
-  padding: 8px 10px;
-}
-
-.nav-right a:hover {
   background: rgba(41, 152, 111, 0.226);
-}
-
-.nav-right__mobile {
-  display: none;
 }
 
 nav ul {
   display: inline-flex;
   list-style-type: none;
   padding-left: 0;
+}
+
+.nav-mobile {
+  display: none;
 }
 
 /* Buttons */
@@ -172,24 +166,24 @@ footer {
     text-align: center;
   }
 
-  nav {
+  header {
     align-items: baseline;
   }
 
-  .nav-right ul {
+  nav ul {
     display: none;
   }
 
-  .nav-right a {
+  nav a {
     font-size: 14px;
   }
 
-  .nav-right ul.open {
+  nav ul.open {
     display: flex;
     flex-direction: column;
   }
 
-  .nav-right__mobile {
+  .nav-mobile {
     display: block;
   }
 }
