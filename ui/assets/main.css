@@ -163,8 +163,8 @@ footer {
   min-height: calc(100vh - 200px);
 }
 
-
 .container {
+  margin: 25px auto;
   padding: 20px;
   text-align: center;
 }
@@ -199,6 +199,32 @@ fieldset > div {
   display: flex;
   padding: 10px 20px;
   margin: 10px auto;
+}
+
+/* Order History */
+
+.order-history {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  max-width: 720px;
+}
+
+.order-card {
+  background: #2a9971;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px -2px rgba(36, 18, 77, .2);
+  color: #fff;
+  padding: 20px;
+  margin: 20px;
+  min-width: 200px;
+  transition: all 0.4s ease-in-out;
+}
+
+.order-card:hover {
+  box-shadow: 0 1px 20px rgba(0,0,0,.2);
+  transform: scale(1.05);
 }
 
 /* Media Queries */
