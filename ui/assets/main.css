@@ -69,11 +69,21 @@ button:hover {
   background: #666;
 }
 
-.btn-primary {
+button.danger {
+  background: #b82e33;
+}
+
+button.danger:hover {
+  background: rgba(184, 46, 51, 0.7);
+}
+
+.btn-primary,
+button.primary {
   background: #1d6b4f;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+button.primary:hover {
   background: #2a9971;
 }
 
@@ -225,6 +235,27 @@ fieldset > div {
 .order-card:hover {
   box-shadow: 0 1px 20px rgba(0,0,0,.2);
   transform: scale(1.05);
+}
+
+/* Admin Dashboard */
+
+.admin-orders {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 960px;
+}
+
+.order-card__admin {
+  border: 2px solid #2a9971;
+  background: #fff;
+  color: #333;
+}
+
+.order-card__admin button {
+  font-size: 12px;
+  padding: 8px 10px;
+  font-weight: 400;
 }
 
 /* Media Queries */
