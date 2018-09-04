@@ -4,7 +4,7 @@
   "description": "A food delivery service app",
   "main": "./server/index.js",
   "scripts": {
-    "start": "nodemon ./server/index.js",
+    "start": "nodemon --exec babel-node ./server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,9 @@
     "express": "^4.16.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
     "nodemon": "^1.18.4"
   }
 }
