@@ -6,6 +6,4 @@ app.get('/', (req, res) => {
   res.send('Working just fine!');
 });
 
-app.listen(3000, () => {
-  console.log('App running on 3000');
-});
+app.listen(3000);
