@@ -1,5 +1,6 @@
 import express from 'express';
 import OrderController from '../controllers/orderController';
+import findOrder from '../middleware/findSingleOrder';
 
 const router = express.Router();
 
@@ -10,5 +11,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/orders', OrderController.getAllOrders);
+router.get('/orders/:id', findOrder, OrderController.getOrder);
 
 export default router;
