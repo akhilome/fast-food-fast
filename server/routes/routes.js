@@ -1,5 +1,5 @@
 import express from 'express';
-import orders from '../db/orders';
+import OrderController from '../controllers/orderController';
 
 const router = express.Router();
 
@@ -9,8 +9,6 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/orders', (req, res) => {
-  res.status(200).json({ orders });
-});
+router.get('/orders', OrderController.getAllOrders);
 
 export default router;
