@@ -26,3 +26,34 @@ describe('GET /api/v1/', () => {
       });
   });
 });
+
+describe('GET /api/v1/orders/', () => {
+  const keys = ['id', 'author', 'title', 'status', 'date'];
+  it('should respond with status 200', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders/')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        done();
+      });
+  });
+
+  it('should return an object with an "orders" property which should be an array', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders/')
+      .end((err, res) => {
+        res.body.should.be.an('object').which.has.a.property('orders');
+        res.body.orders.should.be.an('array');
+        done();
+      });
+  });
+
+  it('should respond with an object having an array with correct data', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders/')
+      .end((err, res) => {
+        res.body.orders[res.body.orders.length - 1].should.have.all.keys(keys);
+        done();
+      });
+  });
+});
