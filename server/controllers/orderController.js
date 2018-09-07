@@ -33,6 +33,29 @@ class OrderController {
       order,
     });
   }
+
+  static updateOrder(req, res) {
+    const { orderIndex } = req;
+    const { status } = req.body;
+
+    if (orderIndex === -1) {
+      return res.status(404).json({
+        error: 'no such order exists',
+      });
+    }
+
+    if (!status) {
+      return res.status(400).json({
+        error: 'no new status specified',
+      });
+    }
+
+    orders[orderIndex].status = status;
+    return res.status(201).json({
+      message: 'order status updated successfully',
+      order: orders[orderIndex],
+    });
+  }
 }
 
 export default OrderController;
