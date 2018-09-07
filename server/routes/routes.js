@@ -12,5 +12,6 @@ router.get('/', (req, res) => {
 
 router.get('/orders', OrderController.getAllOrders);
 router.get('/orders/:id', findOrder, OrderController.getOrder);
+router.post('/orders', OrderController.newOrder);
 
 export default router;

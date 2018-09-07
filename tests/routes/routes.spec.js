@@ -99,3 +99,30 @@ describe('GET /api/v1/orders/<orderId>', () => {
       });
   });
 });
+
+describe('POST /api/v1/orders', () => {
+  const completeData = { author: 'Kizito', title: 'Turkey' };
+  const incompleteData = { author: 'Kizito' };
+
+  it('should return a 400 error and a message if data is incomplete', (done) => {
+    chai.request(app)
+      .post('/api/v1/orders')
+      .send(incompleteData)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.an('object').which.has.a.property('error');
+        done();
+      });
+  });
+
+  it('should add the order to the database and respond with 201 if data is complete', (done) => {
+    chai.request(app)
+      .post('/api/v1/orders')
+      .send(completeData)
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.body.should.be.an('object').which.has.a.property('message');
+        done();
+      });
+  });
+});
