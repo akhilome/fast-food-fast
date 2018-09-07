@@ -8,6 +8,13 @@ import orders from '../../server/db/orders';
 chai.use(chaiHttp);
 chai.use(dirtyChai);
 
+const id = {
+  valid: Math.ceil(Math.random() * orders.length),
+  invalid: null,
+};
+
+const keys = ['id', 'author', 'title', 'status', 'date'];
+
 describe('GET /api/v1/', () => {
   it('should respond with a 200 status code', (done) => {
     chai.request(app)
@@ -29,7 +36,6 @@ describe('GET /api/v1/', () => {
 });
 
 describe('GET /api/v1/orders/', () => {
-  const keys = ['id', 'author', 'title', 'status', 'date'];
   it('should respond with status 200', (done) => {
     chai.request(app)
       .get('/api/v1/orders/')
@@ -60,17 +66,6 @@ describe('GET /api/v1/orders/', () => {
 });
 
 describe('GET /api/v1/orders/<orderId>', () => {
-  const id = {
-    valid: undefined,
-    invalid: undefined,
-  };
-  const keys = ['id', 'author', 'title', 'status', 'date'];
-
-  before(() => {
-    id.valid = Math.ceil(Math.random() * orders.length);
-    id.invalid = orders.length + 1;
-  });
-
   it('should respond with status 200 if order is found', (done) => {
     chai.request(app)
       .get(`/api/v1/orders/${id.valid}`)
@@ -122,6 +117,47 @@ describe('POST /api/v1/orders', () => {
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.an('object').which.has.a.property('message');
+        done();
+      });
+  });
+});
+
+describe('PUT /api/v1/orders/<orderId>', () => {
+  it('should respond with an error if no status is provided', (done) => {
+    chai.request(app)
+      .put(`/api/v1/orders/${id.valid}`)
+      .send({ })
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.should.be.an('object').which.has.a.property('error');
+        done();
+      });
+  });
+
+  it('should respond with an error if no order with provided id exists', (done) => {
+    chai.request(app)
+      .put(`/api/v1/orders/${id.invalid}`)
+      .send({
+        status: 'done',
+      })
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.should.be.an('object').which.has.a.property('error');
+        done();
+      });
+  });
+
+  it('should update the order and return a success message and the updated order', (done) => {
+    chai.request(app)
+      .put(`/api/v1/orders/${id.valid}`)
+      .send({
+        status: 'completed',
+      })
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.body.should.be.an('object').with.all.keys('message', 'order');
+        res.body.order.should.have.property('status');
+        res.body.order.status.should.eql('completed');
         done();
       });
   });
