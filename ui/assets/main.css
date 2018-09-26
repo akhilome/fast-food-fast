@@ -99,7 +99,8 @@ img.food {
 /* Frontpage Hero Section */
 .hero {
   align-items: center;
-  background: linear-gradient(to bottom, #fff, #fff, #7fc1a9);
+  background: url('./images/hero-food.jpg');
+  color: #fff;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 100px);
