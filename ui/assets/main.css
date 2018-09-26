@@ -2,7 +2,7 @@ body {
   background: #fff;
   color: #333;
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.75;
   margin: 0;
 }
@@ -187,9 +187,14 @@ input {
   width: 180px;
 }
 
+input::placeholder {
+  font-size: 16px;
+}
+
 input[type="submit"] {
-  width: calc(100% - 20px);
   background: #1d6b4f;
+  margin: auto;
+  width: auto;
 }
 
 input[type="checkbox"] {
@@ -272,6 +277,10 @@ fieldset > div {
 }
 
 @media only screen and (max-width: 720px) {
+  body {
+    font-size: 16px;
+  }
+
   .outline-odd,
   .outline-even {
     flex-direction: column;
