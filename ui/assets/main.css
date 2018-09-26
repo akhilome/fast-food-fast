@@ -121,25 +121,24 @@ img.food {
 
 .outline h1 {
   font-size: 1.8rem;
+  font-family: 'Comfortaa', cursive;
   padding: 25px 15px;
   text-align: center;
 }
 
-.outline h1,
-.outline h2 {
-  font-family: 'Comfortaa', cursive;
+.outline-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
-.outline-odd,
-.outline-even {
+.outline-inner > div {
   align-items: center;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: space-evenly;
   min-height: 480px;
-}
-
-.outline-even {
-  flex-direction: row-reverse;
+  text-align: center;
 }
 
 /* Frontpage 3 */
@@ -270,21 +269,9 @@ fieldset > div {
 }
 
 /* Media Queries */
-@media only screen and (min-width: 720px) {
-  img.food {
-    width: 480px;
-  }
-}
-
 @media only screen and (max-width: 720px) {
   body {
     font-size: 16px;
-  }
-
-  .outline-odd,
-  .outline-even {
-    flex-direction: column;
-    text-align: center;
   }
 
   header {
