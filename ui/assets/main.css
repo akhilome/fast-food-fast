@@ -2,13 +2,12 @@ body {
   background: #fff;
   color: #333;
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.75;
   margin: 0;
 }
 
 /* Navigation */
-
 header {
   align-items: center;
   display: flex;
@@ -46,7 +45,6 @@ nav ul {
 }
 
 /* Buttons */
-
 button a {
   color: #fff;
 }
@@ -88,7 +86,6 @@ button.primary:hover {
 }
 
 /* Misc */
-
 a {
   color: #2a9971;
   text-decoration: none;
@@ -102,7 +99,8 @@ img.food {
 /* Frontpage Hero Section */
 .hero {
   align-items: center;
-  background: linear-gradient(to bottom, #fff, #fff, #7fc1a9);
+  background: url('./images/hero-food.jpg');
+  color: #fff;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 100px);
@@ -116,7 +114,6 @@ img.food {
 }
 
 /* Frontpage 2 */
-
 .outline {
   display: flex;
   flex-direction: column;
@@ -125,29 +122,27 @@ img.food {
 
 .outline h1 {
   font-size: 1.8rem;
+  font-family: 'Comfortaa', cursive;
   padding: 25px 15px;
   text-align: center;
 }
 
-.outline h1,
-.outline h2 {
-  font-family: 'Comfortaa', cursive;
+.outline-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
-.outline-odd,
-.outline-even {
+.outline-inner > div {
   align-items: center;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: space-evenly;
   min-height: 480px;
-}
-
-.outline-even {
-  flex-direction: row-reverse;
+  text-align: center;
 }
 
 /* Frontpage 3 */
-
 .admin {
   align-items: center;
   background: #eee;
@@ -164,7 +159,6 @@ footer {
 }
 
 /* Wrapper */
-
 .wrapper {
   align-items: center;
   display: flex;
@@ -180,7 +174,6 @@ footer {
 }
 
 /* Form Elements */
-
 form {
   display: block;
 }
@@ -194,9 +187,14 @@ input {
   width: 180px;
 }
 
+input::placeholder {
+  font-size: 16px;
+}
+
 input[type="submit"] {
-  width: calc(100% - 20px);
   background: #1d6b4f;
+  margin: auto;
+  width: auto;
 }
 
 input[type="checkbox"] {
@@ -217,7 +215,6 @@ fieldset > div {
 }
 
 /* Order History */
-
 .order-history {
   display: flex;
   flex-wrap: wrap;
@@ -242,8 +239,35 @@ fieldset > div {
   transform: scale(1.05);
 }
 
-/* Admin Dashboard */
+.order-status-progress,
+.order-status-rejected,
+.order-status-completed {
+	color: #fff;
+	font-size: .8rem;
+	margin: auto;
+}
 
+.order-status-progress::after {
+  content: "in progress";
+}
+
+.order-status-completed::after {
+  content: "completed";
+}
+
+.order-status-rejected::after {
+  content: "rejected";
+}
+
+.order-status-progress::after,
+.order-status-rejected::after,
+.order-status-completed::after {
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+/* Admin Dashboard */
 .admin-orders,
 .admin-menu {
   display: flex;
@@ -274,18 +298,9 @@ fieldset > div {
 }
 
 /* Media Queries */
-
-@media only screen and (min-width: 720px) {
-  img.food {
-    width: 480px;
-  }
-}
-
 @media only screen and (max-width: 720px) {
-  .outline-odd,
-  .outline-even {
-    flex-direction: column;
-    text-align: center;
+  body {
+    font-size: 16px;
   }
 
   header {
