@@ -239,6 +239,34 @@ fieldset > div {
   transform: scale(1.05);
 }
 
+.order-status-progress,
+.order-status-rejected,
+.order-status-completed {
+	color: #fff;
+	font-size: .8rem;
+	margin: auto;
+}
+
+.order-status-progress::after {
+  content: "in progress";
+}
+
+.order-status-completed::after {
+  content: "completed";
+}
+
+.order-status-rejected::after {
+  content: "rejected";
+}
+
+.order-status-progress::after,
+.order-status-rejected::after,
+.order-status-completed::after {
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
 /* Admin Dashboard */
 .admin-orders,
 .admin-menu {
