@@ -4,9 +4,14 @@
   "description": "A food delivery service app",
   "main": "./server/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node ./server/index.js",
-    "test": "nyc mocha --recursive ./tests/* --require babel-register --exit",
-    "cover": "nyc report --reporter=text-lcov | coveralls"
+    "start": "npm run build && node ./dist/index.js",
+    "build": "babel ./server -d dist",
+    "test": "nyc --reporter=lcov mocha --recursive ./tests/**/*.spec.js --require babel-register --exit",
+    "cover": "nyc report --reporter=text-lcov | coveralls",
+    "dev": "nodemon --exec babel-node ./server/index.js"
+  },
+  "engines": {
+    "node": "8.12.0"
   },
   "repository": {
     "type": "git",
