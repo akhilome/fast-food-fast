@@ -6,9 +6,13 @@
   "scripts": {
     "start": "npm run build && node ./dist/index.js",
     "build": "babel ./server -d dist",
-    "test": "nyc --reporter=lcov mocha --recursive ./tests/* --require babel-register --exit",
+    "test": "export NODE_ENV=test && nyc --reporter=lcov mocha --recursive ./tests/* --require babel-register --exit",
     "cover": "nyc report --reporter=text-lcov | coveralls",
-    "dev": "nodemon --exec babel-node ./server/index.js"
+    "dev": "nodemon --exec babel-node ./server/index.js",
+    "purge-db": "echo 'DROP DATABASE IF EXISTS fastfoodfast;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast;' | psql -U postgres",
+    "setup-schema": "psql -U postgres fastfoodfast < ./server/db/schema.sql",
+    "config-db": "npm run purge-db && npm run setup-schema",
+    "setup-testdb": "echo 'DROP DATABASE IF EXISTS fastfoodfast_test;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast_test;' | psql -U postgres"
   },
   "engines": {
     "node": "8.12.0"
@@ -24,12 +28,13 @@
   },
   "homepage": "https://github.com/akhilome/fast-food-fast#readme",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1"
+    "pg": "^7.4.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
