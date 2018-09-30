@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS users (
+  id serial PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  is_admin BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS menu (
+  id serial PRIMARY KEY,
+  food_name VARCHAR(255) NOT NULL,
+  price REAL NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id serial PRIMARY KEY,
+  item INTEGER REFERENCES menu(id),
+  author INTEGER REFERENCES users(id),
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  status VARCHAR(50) NOT NULL DEFAULT 'new'
+);
