@@ -24,7 +24,7 @@ describe('GET /users/<userId>/orders', () => {
     await populateUsersTablePromise;
     await populateOrdersTablePromise;
   });
-  const { validUser } = seedData.users;
+  const { validUser, validUserTwo } = seedData.users;
 
   it('should successfully get all orders for specified user', (done) => {
     chai.request(app)
@@ -68,6 +68,33 @@ describe('GET /users/<userId>/orders', () => {
         } catch (error) {
           done(error);
         }
+      });
+  });
+
+  it('should return a 403 if user tries to get orders not placed by them', (done) => {
+    chai.request(app)
+      .get(`/api/v1/users/${validUserTwo.id}/orders`)
+      .set('x-auth', generateValidToken(validUser))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(403);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+
+  it('should return a 400 if specified user id is not a number', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/dontdothis/orders')
+      .set('x-auth', generateValidToken(validUser))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.status.should.eql('error');
+        res.body.message.should.eql('invalid user id');
+        done();
       });
   });
 });

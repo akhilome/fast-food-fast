@@ -1,5 +1,6 @@
 import orders from '../db/orders';
 import Order from '../models/Order';
+import pool from '../db/config';
 
 class OrderController {
   static getAllOrders(req, res) {
@@ -55,6 +56,35 @@ class OrderController {
       message: 'order status updated successfully',
       order: orders[orderIndex],
     });
+  }
+
+  static async getAllUserOrders(req, res) {
+    const { id } = req.params;
+
+    if (Number.isNaN(Number(id))) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'invalid user id',
+      });
+    }
+
+    if (Number(id) !== req.userId) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'you\'re not allowed to do that',
+      });
+    }
+
+    try {
+      const userOrders = (await pool.query('SELECT * FROM orders WHERE author=$1', [id])).rows;
+      return res.status(200).json({
+        status: 'success',
+        message: 'orders fetched successfully',
+        orders: userOrders,
+      });
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
   }
 }
 

@@ -12,7 +12,8 @@
     "purge-db": "echo 'DROP DATABASE IF EXISTS fastfoodfast;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast;' | psql -U postgres",
     "setup-schema": "psql -U postgres fastfoodfast < ./server/db/schema.sql",
     "config-db": "npm run purge-db && npm run setup-schema",
-    "setup-testdb": "echo 'DROP DATABASE IF EXISTS fastfoodfast_test;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast_test;' | psql -U postgres"
+    "setup-testdb": "echo 'DROP DATABASE IF EXISTS fastfoodfast_test;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast_test;' | psql -U postgres",
+    "seed-db": "psql -U postgres fastfoodfast < ./server/db/seed.sql"
   },
   "engines": {
     "node": "8.12.0"
