@@ -61,10 +61,13 @@ describe('GET /users/<userId>/orders', () => {
       .end(async (err, res) => {
         if (err) done(err);
 
-        const orderCount = (await pool.query('SELECT * FROM orders WHERE author=$1', [validUser.id])).rowCount;
-
-        res.body.orders.length.should.eql(orderCount);
-        done();
+        try {
+          const orderCount = (await pool.query('SELECT * FROM orders WHERE author=$1', [validUser.id])).rowCount;
+          res.body.orders.length.should.eql(orderCount);
+          done();
+        } catch (error) {
+          done(error);
+        }
       });
   });
 });
