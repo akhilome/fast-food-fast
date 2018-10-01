@@ -15,6 +15,10 @@ const seedData = {
       password: 'pixel2user',
       confirmPassword: 'pixel2user',
     },
+    validUserInvalidPass: {
+      email: 'daniel@james.com',
+      password: 'thisiswrong',
+    },
     invalidUser: {
       name: 'four-O-four',
       email: 'no@email.address',

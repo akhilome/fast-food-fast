@@ -128,10 +128,23 @@ describe('POST /auth/login', () => {
       });
   });
 
-  it('should not sign user in if invalid email or password is provided', (done) => {
+  it('should not sign user in if non-existent email is provided', (done) => {
     chai.request(app)
       .post('/api/v1/auth/login')
       .send(seedData.users.invalidUser)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.not.have.keys(['auth_token']);
+        done();
+      });
+  });
+
+  it('should not sign user in if invalid password is provided', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(seedData.users.validUserInvalidPass)
       .end((err, res) => {
         if (err) done(err);
 
