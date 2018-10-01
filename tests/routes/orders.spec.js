@@ -28,7 +28,7 @@ describe('GET /users/<userId>/orders', () => {
 
   it('should successfully get all orders for specified user', (done) => {
     chai.request(app)
-      .get(`/users/${validUser.id}/orders`)
+      .get(`/api/v1/users/${validUser.id}/orders`)
       .set('x-auth', generateValidToken(validUser))
       .end((err, res) => {
         if (err) done(err);
@@ -42,7 +42,7 @@ describe('GET /users/<userId>/orders', () => {
 
   it('should return a 401 if user isn\'t authenticated', (done) => {
     chai.request(app)
-      .get(`/users/${validUser.id}/orders`)
+      .get(`/api/v1/users/${validUser.id}/orders`)
       .set('x-auth', '')
       .end((err, res) => {
         if (err) done(err);
@@ -56,7 +56,7 @@ describe('GET /users/<userId>/orders', () => {
 
   it('should only return orders placed by specified user', (done) => {
     chai.request(app)
-      .get(`/users/${validUser.id}/orders`)
+      .get(`/api/v1/users/${validUser.id}/orders`)
       .set('x-auth', generateValidToken(validUser))
       .end(async (err, res) => {
         if (err) done(err);
