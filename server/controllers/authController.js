@@ -28,6 +28,40 @@ class AuthController {
       return res.status(400).json({ error });
     }
   }
+
+  static async signin(req, res, next) {
+    const { email, password } = req;
+
+    try {
+      // Check if a user with the provided email exists
+      const userExists = (await pool.query('SELECT * FROM users WHERE email=$1', [email])).rowCount;
+      if (!userExists) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'no user with that email exists',
+        });
+      }
+
+      const userDetails = (await pool.query('SELECT * FROM users WHERE email=$1', [email])).rows[0];
+      const correctPassword = await bcrpyt.compare(password, userDetails.password);
+
+      if (!correctPassword) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'incorrect password',
+        });
+      }
+
+      // Append important payload to request object
+      req.userId = userDetails.id;
+      req.userName = userDetails.name;
+      req.userEmail = userDetails.email;
+      req.userStatus = userDetails.is_admin ? 'admin' : 'customer';
+      return next();
+    } catch (error) {
+      return res.status(400).json({ error });
+    }
+  }
 }
 
 export default AuthController;

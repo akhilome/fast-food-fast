@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import pool from '../../server/db/config';
 
 const seedData = {
@@ -13,6 +14,11 @@ const seedData = {
       email: 'daniel@james.com',
       password: 'pixel2user',
       confirmPassword: 'pixel2user',
+    },
+    invalidUser: {
+      name: 'four-O-four',
+      email: 'no@email.address',
+      password: 'invalid',
     },
     invalidUserNoData: {},
     invalidUserNoName: {
@@ -53,4 +59,21 @@ const populateTables = async () => {
   await pool.query(createUsersTableQuery);
 };
 
-export { seedData, populateTables };
+const populateUsersTable = async () => {
+  // hash passwords
+  const adminHashedPassword = await bcrypt.hash(seedData.users.admin.password, 10);
+  const userHashedPassword = await bcrypt.hash(seedData.users.validUser.password, 10);
+  const insertQuery = 'INSERT INTO users(name, email, password, is_admin) VALUES($1, $2, $3, $4)';
+  // Admin user
+  await pool.query(
+    insertQuery,
+    [seedData.users.admin.name, seedData.users.admin.email, adminHashedPassword, 't'],
+  );
+  // Customer
+  await pool.query(
+    insertQuery,
+    [seedData.users.validUser.name, seedData.users.validUser.email, userHashedPassword, 'f'],
+  );
+};
+
+export { seedData, populateTables, populateUsersTable };
