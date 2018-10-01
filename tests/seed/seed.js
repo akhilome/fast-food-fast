@@ -65,15 +65,6 @@ const seedData = {
   ],
 };
 
-// function generateValidToken(id, name, email) {
-//   return jwt.sign({
-//     userId: id,
-//     userName: name,
-//     userEmail: email,
-//     userStatus: email === adminEmail ? 'admin' : 'customer',
-//   }, process.env.JWT_SECRET).toString();
-// }
-
 function generateValidToken(userObject) {
   return jwt.sign({
     userId: userObject.id,
