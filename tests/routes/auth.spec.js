@@ -3,13 +3,13 @@ import 'chai/register-should';
 import chaiHttp from 'chai-http';
 import dirtyChai from 'dirty-chai';
 import app from '../../server/index';
-import { seedData, populateTables, populateUsersTable } from '../seed/seed';
+import { seedData, emptyTables, populateUsersTable } from '../seed/seed';
 
 chai.use(chaiHttp);
 chai.use(dirtyChai);
 
 describe('POST /auth/signup', () => {
-  before(populateTables);
+  before(emptyTables);
 
   it('should signup a valid user successfully', (done) => {
     chai.request(app)
@@ -100,7 +100,7 @@ describe('POST /auth/signup', () => {
 });
 
 describe('POST /auth/login', () => {
-  beforeEach(populateTables);
+  beforeEach(emptyTables);
   beforeEach(populateUsersTable);
 
   it('should sign an existing user in', (done) => {
