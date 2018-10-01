@@ -3,7 +3,7 @@ import 'chai/register-should';
 import chaiHttp from 'chai-http';
 import dirtyChai from 'dirty-chai';
 import app from '../../server/index';
-import { seedData, populateTables } from '../seed/seed';
+import { seedData, populateTables, populateUsersTable } from '../seed/seed';
 
 chai.use(chaiHttp);
 chai.use(dirtyChai);
@@ -94,6 +94,75 @@ describe('POST /auth/signup', () => {
         res.status.should.eql(400);
         res.body.status.should.eql('error');
         res.body.message.should.eql('a user with that email already exists');
+        done();
+      });
+  });
+});
+
+describe('POST /auth/login', () => {
+  beforeEach(populateTables);
+  beforeEach(populateUsersTable);
+
+  it('should sign an existing user in', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(seedData.users.validUser)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(200);
+        res.body.should.be.an('object').which.has.keys(['status', 'message', 'auth_token']);
+        done();
+      });
+  });
+
+  it('should respond with a 400 if required fields are missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(seedData.users.invalidUserNoData)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        done();
+      });
+  });
+
+  it('should not sign user in if non-existent email is provided', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(seedData.users.invalidUser)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.not.have.keys(['auth_token']);
+        done();
+      });
+  });
+
+  it('should not sign user in if invalid password is provided', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(seedData.users.validUserInvalidPass)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.not.have.keys(['auth_token']);
+        done();
+      });
+  });
+
+  it('should not sign in user with improper input format', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'invalid@email', password: 'well?' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.not.have.keys(['auth_token']);
         done();
       });
   });
