@@ -25,6 +25,34 @@ class AuthHandler {
       auth_token: token,
     });
   }
+
+  static authorize(req, res, next) {
+    const token = req.header('x-auth');
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.userId = decoded.userId;
+      req.userName = decoded.userName;
+      req.userEmail = decoded.userEmail;
+      req.userStatus = decoded.userStatus;
+      return next();
+    } catch (error) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'you must be logged in to use this route',
+      });
+    }
+  }
+
+  static authorizeAdmin(req, res, next) {
+    if (req.userStatus !== 'admin') {
+      return res.status(401).json({
+        status: 'error',
+        message: 'only admins can use this route',
+      });
+    }
+    return next();
+  }
 }
 
 export default AuthHandler;
