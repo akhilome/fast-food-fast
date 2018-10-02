@@ -179,3 +179,50 @@ describe('GET /orders', () => {
       });
   });
 });
+
+describe('GET /orders/:id', () => {
+  before(async () => {
+    await emptyTablesPromise;
+    await populateUsersTablePromise;
+    await populateMenuTablePromise;
+    await populateOrdersTablePromise;
+  });
+
+  it('should not get order if user is not an admin', (done) => {
+    chai.request(app)
+      .get(`/api/v1/orders/${1}`)
+      .set('x-auth', generateValidToken(seedData.users.validUser))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(403);
+        done();
+      });
+  });
+
+  it('should not get order if invalid order id is provided', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders/somethingwrong')
+      .set('x-auth', generateValidToken(seedData.users.admin))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        done();
+      });
+  });
+
+  it('should return a 404 if order id doesn\'t exist', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders/5')
+      .set('x-auth', generateValidToken(seedData.users.admin))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(404);
+        done();
+      });
+  });
+
+  // TODO: test for successfully fetched order
+});
