@@ -2,8 +2,31 @@ import orders from '../db/orders';
 import pool from '../db/config';
 
 class OrderController {
-  static getAllOrders(req, res) {
-    res.status(200).json({ orders });
+  static async getAllOrders(req, res) {
+    try {
+      const dbQuery = 'SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id';
+      const allOrders = (await pool.query(dbQuery)).rows;
+
+      const userOrders = allOrders.map((order) => {
+        const formattedOrder = {
+          id: order.id,
+          author: order.name,
+          title: order.food_name,
+          date: order.date,
+          status: order.status,
+        };
+
+        return formattedOrder;
+      });
+
+      res.status(200).json({
+        status: 'success',
+        message: 'orders fetched successfully',
+        orders: userOrders,
+      });
+    } catch (error) {
+      res.status(500).json();
+    }
   }
 
   static getOrder(req, res) {

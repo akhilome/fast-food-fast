@@ -142,3 +142,40 @@ describe('POST /orders', () => {
       });
   });
 });
+
+describe('GET /orders', () => {
+  before(async () => {
+    await emptyTablesPromise;
+    await Promise.all([populateUsersTablePromise, populateMenuTablePromise]);
+    await populateOrdersTablePromise;
+  });
+
+  const { admin, validUser } = seedData.users;
+  it('should get all user order if requester is admin', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders')
+      .set('x-auth', generateValidToken(admin))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(200);
+        res.body.should.have.keys(['status', 'message', 'orders']);
+        res.body.orders.should.be.an('array');
+        done();
+        // TODO: make more assertions
+      });
+  });
+
+  it('should not get orders if user is not admin', (done) => {
+    chai.request(app)
+      .get('/api/v1/orders')
+      .set('x-auth', generateValidToken(validUser))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(403);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+});
