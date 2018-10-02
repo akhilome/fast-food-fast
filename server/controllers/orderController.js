@@ -29,16 +29,47 @@ class OrderController {
     }
   }
 
-  static getOrder(req, res) {
-    const { order } = req;
+  static async getOrder(req, res) {
+    const { id } = req.params;
 
-    if (!order) {
-      return res.status(404).json({
-        error: 'That order doesn\'t exist',
+    if (Number.isNaN(Number(id))) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'invalid order id format',
       });
     }
 
-    return res.status(200).json(order);
+    try {
+      const allOrders = (await pool.query('SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id')).rows;
+
+      const targetOrder = allOrders
+        .map((foundOrder) => {
+          const formatted = {
+            id: foundOrder.id,
+            author: foundOrder.name,
+            title: foundOrder.food_name,
+            date: foundOrder.date,
+            status: foundOrder.status,
+          };
+          return formatted;
+        })
+        .find(order => order.id === Number(id));
+
+      if (!targetOrder) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'no such order exists',
+        });
+      }
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'order fetched successfully',
+        targetOrder,
+      });
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   }
 
   static async newOrder(req, res) {

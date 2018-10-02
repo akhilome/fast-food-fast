@@ -13,8 +13,6 @@ const id = {
   invalid: null,
 };
 
-const keys = ['id', 'author', 'title', 'status', 'date'];
-
 describe('GET /api/v1/', () => {
   it('should respond with a 200 status code', (done) => {
     chai.request(app)
@@ -30,36 +28,6 @@ describe('GET /api/v1/', () => {
       .get('/api/v1')
       .end((err, res) => {
         res.body.should.be.an('object').that.has.a.property('message').which.is.not.empty();
-        done();
-      });
-  });
-});
-
-describe('GET /api/v1/orders/<orderId>', () => {
-  it('should respond with status 200 if order is found', (done) => {
-    chai.request(app)
-      .get(`/api/v1/orders/${id.valid}`)
-      .end((err, res) => {
-        res.should.have.status(200);
-        done();
-      });
-  });
-
-  it('should respond with status 404 and an error message if order is not found', (done) => {
-    chai.request(app)
-      .get(`/api/v1/orders/${id.invalid}`)
-      .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.be.an('object').that.has.property('error');
-        done();
-      });
-  });
-
-  it('should respond with an object having correct data', (done) => {
-    chai.request(app)
-      .get(`/api/v1/orders/${id.valid}`)
-      .end((err, res) => {
-        res.body.should.be.an('object').which.has.all.keys(keys);
         done();
       });
   });
