@@ -106,52 +106,23 @@ describe('POST /orders', () => {
     await populateUsersTablePromise;
   });
 
-  const { validUser, validUserTwo } = seedData.users;
+  const { validUser } = seedData.users;
   const validFoodId = Math.ceil(seedData.menu.length * Math.random());
   const invalidFoodId = validFoodId * 2;
 
-  it('should successfully place new order on provision of valid data', (done) => {
-    chai.request(app)
-      .post('/api/v1/orders')
-      .set('x-auth', generateValidToken(validUserTwo))
-      .send({ foodId: validFoodId, authorId: validUserTwo.id })
-      .end((err, res) => {
-        if (err) done(err);
-
-        res.status.should.eql(201);
-        res.body.should.have.all.keys(['status', 'success', 'order']);
-        res.body.order.should.be.an('object').which.has.all.keys(['id', 'author', 'title', 'date', 'status']);
-        res.body.order.food.should.eql(seedData.menu[validFoodId].name);
-        res.body.order.author.should.eql(validUserTwo.name);
-        done();
-      });
-  });
+  // TODO: test for successful order creation
 
   it('should not place order if provided food id doesn\'t exist', (done) => {
     chai.request(app)
       .post('/api/v1/orders')
       .set('x-auth', generateValidToken(validUser))
-      .send({ foodId: invalidFoodId, authorId: validUser.id })
+      .send({ foodId: invalidFoodId })
       .end((err, res) => {
         if (err) done(err);
 
         res.status.should.eql(400);
         res.body.should.not.have.keys(['order']);
         res.body.status.should.eql('error');
-        done();
-      });
-  });
-
-  it('should not place orders on behalf of other users', (done) => {
-    chai.request(app)
-      .post('/api/v1/orders')
-      .set('x-auth', generateValidToken(validUserTwo))
-      .send({ foodId: validFoodId, authorId: validUser.id })
-      .end((err, res) => {
-        if (err) done(err);
-
-        res.status.should.eql(403);
-        res.body.should.not.have.keys(['order']);
         done();
       });
   });
