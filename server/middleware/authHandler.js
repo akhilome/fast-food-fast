@@ -46,7 +46,7 @@ class AuthHandler {
 
   static authorizeAdmin(req, res, next) {
     if (req.userStatus !== 'admin') {
-      return res.status(401).json({
+      return res.status(403).json({
         status: 'error',
         message: 'only admins can use this route',
       });
