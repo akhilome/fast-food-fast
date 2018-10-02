@@ -98,3 +98,47 @@ describe('GET /users/<userId>/orders', () => {
       });
   });
 });
+
+describe('POST /orders', () => {
+  beforeEach(async () => {
+    await emptyTablesPromise;
+    await populateMenuTablePromise;
+    await populateUsersTablePromise;
+  });
+
+  const { validUser } = seedData.users;
+  const validFoodId = Math.ceil(seedData.menu.length * Math.random());
+  const invalidFoodId = validFoodId * 2;
+
+  // TODO: test for successful order creation
+
+  it('should not place order if provided food id doesn\'t exist', (done) => {
+    chai.request(app)
+      .post('/api/v1/orders')
+      .set('x-auth', generateValidToken(validUser))
+      .send({ foodId: invalidFoodId })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.not.have.keys(['order']);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+
+  it('should respond with an error on provision of invalid data types', (done) => {
+    chai.request(app)
+      .post('/api/v1/orders')
+      .set('x-auth', generateValidToken(validUser))
+      .send({ foodId: 'something weird', authorId: '??' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.should.not.have.keys(['order']);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+});

@@ -1,5 +1,4 @@
 import orders from '../db/orders';
-import Order from '../models/Order';
 import pool from '../db/config';
 
 class OrderController {
@@ -19,20 +18,56 @@ class OrderController {
     return res.status(200).json(order);
   }
 
-  static newOrder(req, res) {
-    const { author, title } = req.body;
-    if (!author || !title) {
+  static async newOrder(req, res) {
+    const { foodId } = req.body;
+    if (!foodId) {
       return res.status(400).json({
-        error: 'incomplete data',
+        status: 'error',
+        message: 'incomplete data',
       });
     }
 
-    const order = new Order(orders.length + 1, author, title);
-    orders.push(order);
-    return res.status(201).json({
-      message: 'order placed',
-      order,
-    });
+    if (typeof foodId !== 'number') {
+      return res.status(400).json({
+        status: 'error',
+        message: 'invalid data provided',
+      });
+    }
+    try {
+      const foodExists = (await pool.query('SELECT * FROM menu WHERE id=$1', [foodId])).rowCount;
+
+      if (!foodExists) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'no such food exists',
+        });
+      }
+    } catch (error) {
+      res.status(500).json();
+    }
+
+    const dbInsertQuery = 'INSERT INTO orders(item, author) VALUES($1, $2)';
+    const dbSelectQuery = 'SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id';
+
+    try {
+      await pool.query(dbInsertQuery, [foodId, req.userId]);
+      const allOrders = (await pool.query(dbSelectQuery));
+      const newOrder = allOrders.rows[allOrders.rowCount - 1];
+
+      return res.status(201).json({
+        status: 'success',
+        message: 'new order placed successfully',
+        order: {
+          id: newOrder.id,
+          author: newOrder.name,
+          title: newOrder.food_name,
+          date: newOrder.date,
+          status: newOrder.status,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json();
+    }
   }
 
   static updateOrder(req, res) {
