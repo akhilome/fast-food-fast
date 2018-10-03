@@ -226,3 +226,49 @@ describe('GET /orders/:id', () => {
 
   // TODO: test for successfully fetched order
 });
+
+describe('PUT /orders/:id', () => {
+  it('should not allow non admin users update order status', (done) => {
+    chai.request(app)
+      .put('/api/v1/orders/1')
+      .set('x-auth', generateValidToken(seedData.users.validUser))
+      .send({ status: 'complete' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(403);
+        done();
+      });
+  });
+
+  it('should return a 400 if invalid order id is provided', (done) => {
+    chai.request(app)
+      .put('/api/v1/orders/invalidstuff')
+      .set('x-auth', generateValidToken(seedData.users.admin))
+      .send({ status: 'complete' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+
+  it('should not allow any text to be set as status', (done) => {
+    chai.request(app)
+      .put('/api/v1/orders/1')
+      .set('x-auth', generateValidToken(seedData.users.admin))
+      .send({ status: 'this is wrong' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.status.should.eql('error');
+        res.body.message.should.eql('incorrect status type provided');
+        done();
+      });
+  });
+
+  // TODO: test for successfully updated order
+});
