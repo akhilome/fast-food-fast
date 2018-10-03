@@ -1,28 +1,17 @@
-import orders from '../db/orders';
 import pool from '../db/config';
+import orderFormatter from '../middleware/formatter';
 
 class OrderController {
   static async getAllOrders(req, res) {
     try {
       const dbQuery = 'SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id';
       const allOrders = (await pool.query(dbQuery)).rows;
-
-      const userOrders = allOrders.map((order) => {
-        const formattedOrder = {
-          id: order.id,
-          author: order.name,
-          title: order.food_name,
-          date: order.date,
-          status: order.status,
-        };
-
-        return formattedOrder;
-      });
+      const formattedOrders = orderFormatter(allOrders);
 
       res.status(200).json({
         status: 'success',
         message: 'orders fetched successfully',
-        orders: userOrders,
+        orders: formattedOrders,
       });
     } catch (error) {
       res.status(500).json();
@@ -42,18 +31,8 @@ class OrderController {
     try {
       const allOrders = (await pool.query('SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id')).rows;
 
-      const targetOrder = allOrders
-        .map((foundOrder) => {
-          const formatted = {
-            id: foundOrder.id,
-            author: foundOrder.name,
-            title: foundOrder.food_name,
-            date: foundOrder.date,
-            status: foundOrder.status,
-          };
-          return formatted;
-        })
-        .find(order => order.id === Number(id));
+      const formattedOrders = orderFormatter(allOrders);
+      const targetOrder = formattedOrders.find(order => order.id === Number(id));
 
       if (!targetOrder) {
         return res.status(404).json({
@@ -124,27 +103,32 @@ class OrderController {
     }
   }
 
-  static updateOrder(req, res) {
-    const { orderIndex } = req;
-    const { status } = req.body;
+  static async updateOrder(req, res) {
+    const { id } = req.params;
 
-    if (orderIndex === -1) {
-      return res.status(404).json({
-        error: 'no such order exists',
-      });
-    }
-
-    if (!status) {
+    if (!Number(id)) {
       return res.status(400).json({
-        error: 'no new status specified',
+        status: 'error',
+        message: 'invalid order id provided',
       });
     }
 
-    orders[orderIndex].status = status;
-    return res.status(201).json({
-      message: 'order status updated successfully',
-      order: orders[orderIndex],
-    });
+    try {
+      const dbQuery = 'UPDATE orders SET status=$1 WHERE id=$2';
+      await pool.query(dbQuery, [req.status, Number(id)]);
+
+      const updatedOrders = (await pool.query('SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id')).rows;
+
+      const formattedOrders = orderFormatter(updatedOrders);
+      const targetOrder = formattedOrders.find(order => order.id === Number(id));
+      return res.status(200).json({
+        status: 'success',
+        message: 'order status updated successfully',
+        order: targetOrder,
+      });
+    } catch (error) {
+      return res.status(500).json();
+    }
   }
 
   static async getAllUserOrders(req, res) {

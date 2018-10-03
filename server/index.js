@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import router from './routes/routes';
+
 import authRouter from './routes/authRouter';
 import ordersRouter from './routes/ordersRouter';
 import menuRouter from './routes/menuRouter';
@@ -17,8 +17,6 @@ app.get('/', (req, res) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use('/api/v1', router);
 
 // Orders routes
 app.use('/api/v1', ordersRouter);

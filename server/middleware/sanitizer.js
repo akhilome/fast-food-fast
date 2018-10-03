@@ -60,6 +60,25 @@ class Sanitize {
     req.password = password.trim();
     return next();
   }
+
+  static updateStatus(req, res, next) {
+    const { status } = req.body;
+
+    if (
+      status !== 'complete'
+      && status !== 'processing'
+      && status !== 'cancelled'
+    ) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'incorrect status type provided',
+      });
+    }
+
+    req.status = status;
+
+    return next();
+  }
 }
 
 export default Sanitize;
