@@ -275,4 +275,19 @@ describe('PUT /orders/:id', () => {
         done();
       });
   });
+
+  it('should not update the status of a non-existent order', (done) => {
+    chai.request(app)
+      .put('/api/v1/orders/2')
+      .set('x-auth', generateValidToken(users.admin))
+      .send({ status: 'complete' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.be.eql(404);
+        res.body.should.be.an('object').which.has.all.keys(['status', 'message']);
+        res.body.should.not.have.keys('order');
+        done();
+      });
+  });
 });
