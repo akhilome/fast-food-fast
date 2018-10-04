@@ -44,7 +44,7 @@ class OrderController {
       return res.status(200).json({
         status: 'success',
         message: 'order fetched successfully',
-        targetOrder,
+        order: targetOrder,
       });
     } catch (error) {
       return res.status(500).json(error);
@@ -76,7 +76,7 @@ class OrderController {
         });
       }
     } catch (error) {
-      res.status(500).json();
+      res.status(500).json(error);
     }
 
     const dbInsertQuery = 'INSERT INTO orders(item, author) VALUES($1, $2)';

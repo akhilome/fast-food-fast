@@ -1,31 +1,17 @@
 import chai from 'chai';
 import 'chai/register-should';
 import chaiHttp from 'chai-http';
-import dirtyChai from 'dirty-chai';
 
 import app from '../../server/index';
-import {
-  seedData,
-  emptyTablesPromise,
-  populateUsersTablePromise,
-  populateMenuTablePromise,
-  generateValidToken,
-} from '../seed/seed';
+import { users, generateValidToken } from '../seed/seed';
 
 chai.use(chaiHttp);
-chai.use(dirtyChai);
-
-before(async () => {
-  await emptyTablesPromise;
-  await populateMenuTablePromise;
-  await populateUsersTablePromise;
-});
 
 describe('POST /menu', () => {
   it('should not allow non admin users add new food to menu', (done) => {
     chai.request(app)
       .post('/api/v1/menu')
-      .set('x-auth', generateValidToken(seedData.users.validUser))
+      .set('x-auth', generateValidToken(users.validUser))
       .send({
         foodName: 'Steak',
         foodImage: 'https://i.imgur.com/7itOeyG.jpg',
@@ -42,7 +28,7 @@ describe('POST /menu', () => {
   it('should not accept an incomplete request body', (done) => {
     chai.request(app)
       .post('/api/v1/menu')
-      .set('x-auth', generateValidToken(seedData.users.admin))
+      .set('x-auth', generateValidToken(users.admin))
       .send({ foodName: 'Pizza' })
       .end((err, res) => {
         if (err) done(err);
@@ -56,7 +42,7 @@ describe('POST /menu', () => {
   it('should not accept an improperly formatted price', (done) => {
     chai.request(app)
       .post('/api/v1/menu')
-      .set('x-auth', generateValidToken(seedData.users.admin))
+      .set('x-auth', generateValidToken(users.admin))
       .send({ foodName: 'Smoked bread', price: 'cheap' })
       .end((err, res) => {
         if (err) done(err);
@@ -70,7 +56,7 @@ describe('POST /menu', () => {
   it('should add new food items to the menu successfully', (done) => {
     chai.request(app)
       .post('/api/v1/menu')
-      .set('x-auth', generateValidToken(seedData.users.admin))
+      .set('x-auth', generateValidToken(users.admin))
       .send({
         foodName: 'Tasty Chicken',
         foodImage: 'https://i.imgur.com/z490cis.jpg',
@@ -90,7 +76,7 @@ describe('POST /menu', () => {
 });
 
 describe('GET /menu', () => {
-  const { validUser } = seedData.users;
+  const { validUser } = users;
 
   it('should get menu successfully if user is logged in', (done) => {
     chai.request(app)

@@ -1,68 +1,61 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import pool from '../../server/db/config';
 
 const adminEmail = 'hovkard@gmail.com';
 
-const seedData = {
-  users: {
-    admin: {
-      id: null,
-      name: 'Kizito',
-      email: adminEmail,
-      password: 'suppersecurepassword',
-      confirmPassword: 'suppersecurepassword',
-    },
-    validUser: {
-      id: null,
-      name: 'James',
-      email: 'daniel@james.com',
-      password: 'pixel2user',
-      confirmPassword: 'pixel2user',
-    },
-    validUserTwo: {
-      id: null,
-      name: 'Philip',
-      email: 'philip@new.man',
-      password: 'facilitate',
-      confirmPassword: 'facilitate',
-    },
-    validUserInvalidPass: {
-      email: 'daniel@james.com',
-      password: 'thisiswrong',
-    },
-    invalidUser: {
-      name: 'four-O-four',
-      email: 'no@email.address',
-      password: 'invalid',
-    },
-    invalidUserNoData: {},
-    invalidUserNoName: {
-      email: 'unserious@lad.com',
-      password: 'insecure',
-      confirmPassword: 'insecure',
-    },
-    invalidUserNoEmail: {
-      name: 'Name?',
-      password: 'pass',
-      confirmPassword: 'pass',
-    },
-    invalidUserNoPass: {
-      name: 'Magician',
-      email: 'an@email.address',
-    },
-    invalidUserPassMissMatch: {
-      name: 'Olodo',
-      email: 'another@sweet.email',
-      password: 'oneThing',
-      confirmPassword: 'anEntirelyDifferentThing',
-    },
+
+const users = {
+  admin: {
+    id: 1,
+    name: 'Kizito',
+    email: adminEmail,
+    password: 'suppersecurepassword',
+    confirmPassword: 'suppersecurepassword',
   },
-  menu: [
-    { name: 'Burger', price: 700 },
-    { name: 'Spiced turkey', price: 1200 },
-    { name: 'Interesting biscuits', price: 12500 },
-  ],
+  validUser: {
+    id: 2,
+    name: 'James',
+    email: 'daniel@james.com',
+    password: 'pixel2user',
+    confirmPassword: 'pixel2user',
+  },
+  validUserTwo: {
+    id: 3,
+    name: 'Philip',
+    email: 'philip@new.man',
+    password: 'facilitate',
+    confirmPassword: 'facilitate',
+  },
+  validUserInvalidPass: {
+    email: 'daniel@james.com',
+    password: 'thisiswrong',
+  },
+  invalidUser: {
+    name: 'four-O-four',
+    email: 'no@email.address',
+    password: 'invalid',
+  },
+  invalidUserNoData: {},
+  invalidUserNoName: {
+    email: 'unserious@lad.com',
+    password: 'insecure',
+    confirmPassword: 'insecure',
+  },
+  invalidUserNoEmail: {
+    name: 'Name?',
+    password: 'pass',
+    confirmPassword: 'pass',
+  },
+  invalidUserNoPass: {
+    name: 'Magician',
+    email: 'an@email.address',
+  },
+  invalidUserPassMissMatch: {
+    name: 'Olodo',
+    email: 'another@sweet.email',
+    password: 'oneThing',
+    confirmPassword: 'anEntirelyDifferentThing',
+  },
 };
 
 function generateValidToken(userObject) {
@@ -110,74 +103,8 @@ const emptyTables = async () => {
   await pool.query(createOrdersTableQuery);
 };
 
-const emptyTablesPromise = new Promise((resolve) => {
-  resolve(emptyTables);
-});
-
-const populateUsersTable = async () => {
-  // hash passwords
-  const adminHashedPassword = await bcrypt.hash(seedData.users.admin.password, 10);
-  const userOneHashedPassword = await bcrypt.hash(seedData.users.validUser.password, 10);
-  const userTwoHashedPassword = await bcrypt.hash(seedData.users.validUserTwo.password, 10);
-  const insertQuery = 'INSERT INTO users(name, email, password, is_admin) VALUES($1, $2, $3, $4) RETURNING id';
-  // Admin user
-  seedData.users.admin.id = (await pool.query(
-    insertQuery,
-    [seedData.users.admin.name, seedData.users.admin.email, adminHashedPassword, 't'],
-  )).rows[0].id;
-  // Customer 1
-  seedData.users.validUser.id = (await pool.query(
-    insertQuery,
-    [seedData.users.validUser.name, seedData.users.validUser.email, userOneHashedPassword, 'f'],
-  )).rows[0].id;
-  // Customer 2
-  seedData.users.validUserTwo.id = (await pool.query(
-    insertQuery,
-    [seedData.users.validUserTwo.name, seedData.users.validUserTwo.email, userTwoHashedPassword, 'f'],
-  )).rows[0].id;
-};
-
-const populateUsersTablePromise = new Promise((resolve) => {
-  resolve(populateUsersTable);
-});
-
-const populateMenuTable = () => {
-  const insertQuery = 'INSERT INTO menu(food_name, price) VALUES($1, $2)';
-
-  seedData.menu.forEach(async (food) => {
-    await pool.query(insertQuery, [food.name, food.price]);
-  });
-};
-
-const populateMenuTablePromise = new Promise((resolve) => {
-  resolve(populateMenuTable);
-});
-
-const populateOrdersTable = async () => {
-  const insertQuery = 'INSERT INTO orders(item, author) VALUES($1, $2)';
-  const randomFoodId = Math.ceil(seedData.menu.length * Math.random());
-
-  const orderOnePromise = pool.query(insertQuery, [randomFoodId, seedData.users.validUser.id]);
-  const orderTwoPromise = pool.query(insertQuery, [randomFoodId, seedData.users.validUser.id]);
-  const orderThreePromise = pool.query(insertQuery, [randomFoodId, seedData.users.validUserTwo.id]);
-  const orderFourPromise = pool.query(insertQuery, [randomFoodId, seedData.users.validUser.id]);
-
-  await Promise.all([orderOnePromise, orderTwoPromise, orderThreePromise, orderFourPromise]);
-};
-
-const populateOrdersTablePromise = new Promise((resolve) => {
-  resolve(populateOrdersTable);
-});
-
 export {
-  seedData,
+  users,
   emptyTables,
-  emptyTablesPromise,
-  populateUsersTable,
-  populateUsersTablePromise,
-  populateMenuTable,
-  populateMenuTablePromise,
-  populateOrdersTable,
-  populateOrdersTablePromise,
   generateValidToken,
 };
