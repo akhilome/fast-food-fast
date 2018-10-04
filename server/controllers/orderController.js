@@ -117,6 +117,15 @@ class OrderController {
       const dbQuery = 'UPDATE orders SET status=$1 WHERE id=$2';
       await pool.query(dbQuery, [req.status, Number(id)]);
 
+      const orderExists = (await pool.query('SELECT * FROM orders WHERE id=$1', [Number(id)])).rowCount;
+
+      if (!orderExists) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'no order with that id exists',
+        });
+      }
+
       const updatedOrders = (await pool.query('SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id')).rows;
 
       const formattedOrders = orderFormatter(updatedOrders);
