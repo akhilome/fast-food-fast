@@ -79,6 +79,29 @@ class Sanitize {
 
     return next();
   }
+
+  static addFood(req, res, next) {
+    const { foodName, foodImage, price } = req.body;
+
+    if (!foodName || !price) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'you\'re missing some important fields',
+      });
+    }
+
+    if (Number.isNaN(Number(price))) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'food price should be a number',
+      });
+    }
+
+    req.foodName = foodName;
+    req.foodImage = foodImage;
+    req.price = price;
+    return next();
+  }
 }
 
 export default Sanitize;
