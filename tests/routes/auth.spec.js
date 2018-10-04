@@ -1,20 +1,18 @@
 import chai from 'chai';
 import 'chai/register-should';
 import chaiHttp from 'chai-http';
-import dirtyChai from 'dirty-chai';
 import app from '../../server/index';
-import { seedData, emptyTables, populateUsersTable } from '../seed/seed';
+import { users, emptyTables } from '../seed/seed';
 
 chai.use(chaiHttp);
-chai.use(dirtyChai);
+
+before(emptyTables);
 
 describe('POST /auth/signup', () => {
-  before(emptyTables);
-
-  it('should signup a valid user successfully', (done) => {
+  it('should signup an admin user successfully', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(seedData.users.admin)
+      .send(users.admin)
       .end((err, res) => {
         if (err) done(err);
 
@@ -22,8 +20,25 @@ describe('POST /auth/signup', () => {
         res.body.should.be.an('object').that.has.keys(['status', 'message', 'user']);
         res.body.status.should.eql('success');
         res.body.user.should.have.keys(['id', 'name', 'email']);
-        res.body.user.name.should.eql(seedData.users.admin.name);
-        res.body.user.email.should.eql(seedData.users.admin.email);
+        res.body.user.name.should.eql(users.admin.name);
+        res.body.user.email.should.eql(users.admin.email);
+        done();
+      });
+  });
+
+  it('should signup a valid user successfully', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(users.validUser)
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(201);
+        res.body.should.be.an('object').that.has.keys(['status', 'message', 'user']);
+        res.body.status.should.eql('success');
+        res.body.user.should.have.keys(['id', 'name', 'email']);
+        res.body.user.name.should.eql(users.validUser.name);
+        res.body.user.email.should.eql(users.validUser.email);
         done();
       });
   });
@@ -31,7 +46,7 @@ describe('POST /auth/signup', () => {
   it('should not signup a user with no name', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(seedData.users.invalidUserNoName)
+      .send(users.invalidUserNoName)
       .end((err, res) => {
         if (err) done(err);
 
@@ -45,7 +60,7 @@ describe('POST /auth/signup', () => {
   it('should not signup a user with no email', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(seedData.users.invalidUserNoEmail)
+      .send(users.invalidUserNoEmail)
       .end((err, res) => {
         if (err) done(err);
 
@@ -59,7 +74,7 @@ describe('POST /auth/signup', () => {
   it('should not signup a user with no password', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(seedData.users.invalidUserNoPass)
+      .send(users.invalidUserNoPass)
       .end((err, res) => {
         if (err) done(err);
 
@@ -73,7 +88,7 @@ describe('POST /auth/signup', () => {
   it('should not signup a user with missmatching passwords', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(seedData.users.invalidUserPassMissMatch)
+      .send(users.invalidUserPassMissMatch)
       .end((err, res) => {
         if (err) done(err);
         res.status.should.eql(400);
@@ -88,7 +103,7 @@ describe('POST /auth/signup', () => {
   it('should not signup a user if email already exists', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(seedData.users.admin)
+      .send(users.admin)
       .end((err, res) => {
         if (err) done(err);
         res.status.should.eql(400);
@@ -100,13 +115,10 @@ describe('POST /auth/signup', () => {
 });
 
 describe('POST /auth/login', () => {
-  beforeEach(emptyTables);
-  beforeEach(populateUsersTable);
-
   it('should sign an existing user in', (done) => {
     chai.request(app)
       .post('/api/v1/auth/login')
-      .send(seedData.users.validUser)
+      .send(users.validUser)
       .end((err, res) => {
         if (err) done(err);
 
@@ -119,7 +131,7 @@ describe('POST /auth/login', () => {
   it('should respond with a 400 if required fields are missing', (done) => {
     chai.request(app)
       .post('/api/v1/auth/login')
-      .send(seedData.users.invalidUserNoData)
+      .send(users.invalidUserNoData)
       .end((err, res) => {
         if (err) done(err);
 
@@ -131,7 +143,7 @@ describe('POST /auth/login', () => {
   it('should not sign user in if non-existent email is provided', (done) => {
     chai.request(app)
       .post('/api/v1/auth/login')
-      .send(seedData.users.invalidUser)
+      .send(users.invalidUser)
       .end((err, res) => {
         if (err) done(err);
 
@@ -144,7 +156,7 @@ describe('POST /auth/login', () => {
   it('should not sign user in if invalid password is provided', (done) => {
     chai.request(app)
       .post('/api/v1/auth/login')
-      .send(seedData.users.validUserInvalidPass)
+      .send(users.validUserInvalidPass)
       .end((err, res) => {
         if (err) done(err);
 

@@ -1,11 +1,9 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import 'chai/register-should';
-import dirtyChai from 'dirty-chai';
 import app from '../server';
 
 chai.use(chaiHttp);
-chai.use(dirtyChai);
 
 describe('GET /', () => {
   it('should have a status code of 200', (done) => {
@@ -21,7 +19,7 @@ describe('GET /', () => {
     chai.request(app)
       .get('/')
       .end((err, res) => {
-        res.body.should.be.an('object').that.is.not.empty();
+        res.body.should.be.an('object');
         done();
       });
   });
