@@ -27,6 +27,14 @@ app.use('/api/v1/auth', authRouter);
 // Menu routes
 app.use('/api/v1/menu', menuRouter);
 
+// Catch all unassigned routes
+app.all('*', (req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: 'no route has been assigned to that URL',
+  });
+});
+
 app.listen(process.env.PORT);
 
 export default app;
