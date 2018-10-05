@@ -1,0 +1,255 @@
+FORMAT: 1A
+HOST: https://kiakiafood.herokuapp.com/api/v1/
+
+# Fast Food Fast
+
+Sign up and place orders for tasty **fast food** and get it **fast**.
+
+## Authentication [/auth]
+
+### Create an Account [POST /auth/signup]
+
++ Request (application/json)
+
+        {
+            "name": "User's name",
+            "email": "User's valid email",
+            "password": "A password longer than 6 chars",
+            "confirmPassWord": "The above password, again"
+        }
+        
++ Response 201 (application/json)
+        
+    + Body
+            
+            {
+              "status": "success",
+              "message": "user created successfully",
+              "user":  {
+                  "id": <id>
+                  "name": "<name>"
+                  "email": "<email>"
+                }
+            }
+            
+### Login to your Account [POST /auth/login]
+
++ Request (application/json)
+
+        {
+            "email": "valid email address",
+            "password": "valid password"
+        }
+        
++ Response 200 (application/json)
+        
+    + Body
+            
+            {
+                "status": "success",
+                "message": "user logged in successfully",
+                "auth_token": "valid jwt generated"
+            }
+            
+## Orders [/orders]
+
+### Make New Food Order [POST /orders]
+
++ Request (application/json)
+    
+        {
+            "foodId": "valid food id"
+        }
+        
++ Response 200 (application/json)
+
+        {
+          "status": "success",
+          "message": "new order placed successfully",
+          "order": {
+            "id": "order id",
+            "author": "order author",
+            "title": "Food title",
+            "date": "order date",
+            "status" "order status"
+          }
+        }
+    
++ Request (application/json)
+    
+        {
+            "foodId": "invalid food id(strings)"
+        }
+        
++ Response 400 (application/json)
+
+        {
+          "status": "error",
+          "message": "invalid data provided"
+        }
+
+
++ Request (application/json)
+    
+        {
+            "foodId": ""
+        }
+        
++ Response 400 (application/json)
+
+        {
+          "status": "error",
+          "message": "incomplete data"
+        }
+
+
++ Request (application/json)
+    
+        {
+            "foodId": "valid non-existent food id"
+        }
+        
++ Response 400 (application/json)
+
+        {
+          "status": "error",
+          "message": "no such food exists"
+        }
+        
+### Get All Orders [GET /orders]
+
++ Response 200 (application/json)
+
+        {
+          "status": "success",
+          "message": "orders fetched successfully",
+          "orders": [
+            {
+              "id": "order id",
+              "author": "order author",
+              "title": "Food title",
+              "date": "order date",
+              "status": "order status"
+            },
+            {
+              "id": "order id",
+              "author": "order author",
+              "title": "Food title",
+              "date": "order date",
+              "status": "order status"
+            },
+            {
+              "id": "order id",
+              "author": "order author",
+              "title": "Food title",
+              "date": "order date",
+              "status": "order status"
+            }
+          ]
+        }
+        
+### Get Details Of a Specific Order [GET /orders/:id]
+
++ Response 200 (application/json)
+
+        {
+          "status": "success",
+          "message": "order fetched successfully",
+          "order": {
+            "id": "order id",
+            "author": "order author",
+            "title": "Food title",
+            "date": "order date",
+            "status": "order status"
+          }
+        }
+
+### Update Order Status [PUT /orders/:id]
+
++ Response 200 (application/json)
+
+        {
+            "status": "success",
+            "message": "order status updated successfully",
+            "order": {
+                "id": "order id",
+                "author": "order author",
+                "title": "Food title",
+                "date": "order date",
+                "status": "new order status"
+            }
+        }
+        
+## Menu [/menu]
+
+### Get Available Menu [GET /menu]
+
++ Response 200 (application/json)
+
+        {
+          "status": "success",
+          "message": "menu fetched successfully",
+          "menu": [
+            {
+              "name": "Food 1 name",
+              "price": "Food price",
+              "image": "url of food image"
+            },
+            {
+              "name": "Food 2 name",
+              "price": "Food price",
+              "image": "url of food image"
+            },
+            {
+              "name": "Food 3 name",
+              "price": "Food price",
+              "image": "url of food image"
+            }
+          ]
+        }
+        
+### Add New Food To Menu [POST /menu]
+
++ Request (application/json)
+
+        { 
+            "foodName": "Name of food", 
+            "foodImage": "Image URL of food", 
+            "price": "Food price (numeric)"
+        }
+        
++ Response 201 (application/json)
+
+        {
+          "status": "success",
+          "message": "new food added successfully",
+          "food": {
+            "id": "food id",
+            "food_name": "food name",
+            "food_image": "food image url",
+            "price": "food price"
+          }
+        }
+        
+## Users [/users]
+
+### User Order History [GET /users/<userId>/orders]
+
++ Response 200 (application/json)
+
+        {
+          "status": "success",
+          "message": "orders for user <id> fetched successfully",
+          "orders": [
+            {
+              "name": "Food 1 Name",
+              "date": "Order date",
+              "status": "Order status"
+            },
+            {
+              "name": "Food 2 Name",
+              "date": "Order date",
+              "status": "Order status"
+            }
+          ]
+        }

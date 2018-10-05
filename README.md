@@ -129,6 +129,7 @@ npm test
 
 * UI Templates => [GitHub Pages](https://akhilome.github.io/fast-food-fast/ui/) 
 * API => [Heroku](https://kiakiafood.herokuapp.com/) 
+* API docs => [Apiary](https://kiakiafood.docs.apiary.io)
 
 ## Tecnologies Used
 
