@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-Make sure you have NodeJS (^v8.12.0), NPM (^v6.4.1), and PostgreSQL (^v10.5) installed.
+Make sure you have NodeJS (_>8.12.0_), NPM (_>6.4.1_), and PostgreSQL (_>10.5_) installed.
 
 #### Clone the project repo and cd into it:
 
@@ -101,7 +101,7 @@ then access any of the endpoints listed below
 }
 ```
 
-#### `PUT /orders/\<orderId\>`
+#### `PUT /orders/<orderId>`
 
 ```json
 {
@@ -142,4 +142,4 @@ npm test
 
 ## Acknowledgements 
 
-* [Andela](https://andela.com/)
+* [Andela](https://andela.com/) 
