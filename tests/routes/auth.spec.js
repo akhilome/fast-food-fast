@@ -149,6 +149,7 @@ describe('POST /auth/login', () => {
 
         res.status.should.eql(400);
         res.body.should.not.have.keys(['auth_token']);
+        res.body.message.should.eql('invalid email or password provided');
         done();
       });
   });
@@ -162,6 +163,7 @@ describe('POST /auth/login', () => {
 
         res.status.should.eql(400);
         res.body.should.not.have.keys(['auth_token']);
+        res.body.message.should.eql('invalid email or password provided');
         done();
       });
   });
