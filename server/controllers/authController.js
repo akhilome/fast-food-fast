@@ -38,7 +38,7 @@ class AuthController {
       if (!userExists) {
         return res.status(400).json({
           status: 'error',
-          message: 'no user with that email exists',
+          message: 'invalid email or password provided',
         });
       }
 
@@ -48,7 +48,7 @@ class AuthController {
       if (!correctPassword) {
         return res.status(400).json({
           status: 'error',
-          message: 'incorrect password',
+          message: 'invalid email or password provided',
         });
       }
 
