@@ -1,16 +1,14 @@
 import jwt from 'jsonwebtoken';
 import pool from '../../server/db/config';
 
-const adminEmail = 'hovkard@gmail.com';
-
-
 const users = {
   admin: {
     id: 1,
     name: 'Kizito',
-    email: adminEmail,
+    email: 'hovkard@gmail.com',
     password: 'suppersecurepassword',
     confirmPassword: 'suppersecurepassword',
+    adminSecret: process.env.ADMIN_SECRET,
   },
   validUser: {
     id: 2,
@@ -18,6 +16,7 @@ const users = {
     email: 'daniel@james.com',
     password: 'pixel2user',
     confirmPassword: 'pixel2user',
+    adminSecret: '',
   },
   validUserTwo: {
     id: 3,
@@ -25,6 +24,7 @@ const users = {
     email: 'philip@new.man',
     password: 'facilitate',
     confirmPassword: 'facilitate',
+    adminSecret: '',
   },
   validUserInvalidPass: {
     email: 'daniel@james.com',
@@ -63,7 +63,7 @@ function generateValidToken(userObject) {
     userId: userObject.id,
     userName: userObject.name,
     userEmail: userObject.email,
-    userStatus: userObject.email === adminEmail ? 'admin' : 'customer',
+    userStatus: userObject.adminSecret === process.env.ADMIN_SECRET ? 'admin' : 'customer',
   }, process.env.JWT_SECRET).toString();
 }
 

@@ -3,8 +3,13 @@ import pool from '../db/config';
 
 class AuthController {
   static async signup(req, res) {
-    const { name, email, password } = req;
-    const isAdmin = email === 'hovkard@gmail.com' ? 't' : 'f';
+    const {
+      name,
+      email,
+      password,
+      adminSecret,
+    } = req;
+    const isAdmin = adminSecret === process.env.ADMIN_SECRET ? 't' : 'f';
 
     try {
       // Check if a user with the provided email already exists

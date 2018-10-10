@@ -1,9 +1,11 @@
 import chai from 'chai';
 import 'chai/register-should';
 import chaiHttp from 'chai-http';
+import dotenv from 'dotenv';
 import app from '../../server/index';
 import { users, emptyTables } from '../seed/seed';
 
+dotenv.config();
 chai.use(chaiHttp);
 
 before(emptyTables);
