@@ -16,6 +16,7 @@ const users = {
     email: 'daniel@james.com',
     password: 'pixel2user',
     confirmPassword: 'pixel2user',
+    adminSecret: '',
   },
   validUserTwo: {
     id: 3,
@@ -23,6 +24,7 @@ const users = {
     email: 'philip@new.man',
     password: 'facilitate',
     confirmPassword: 'facilitate',
+    adminSecret: '',
   },
   validUserInvalidPass: {
     email: 'daniel@james.com',
