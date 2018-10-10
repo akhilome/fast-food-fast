@@ -28,6 +28,23 @@ describe('POST /orders', () => {
       });
   });
 
+  it('should successfuly place order for food if food id is string', (done) => {
+    chai.request(app)
+      .post('/api/v1/orders')
+      .set('x-auth', generateValidToken(validUser))
+      .send({ foodId: '1' })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(201);
+        res.body.status.should.eql('success');
+        res.body.order.should.be.an('object');
+        res.body.order.should.have.keys(['id', 'author', 'title', 'date', 'status']);
+        res.body.order.status.should.eql('new');
+        done();
+      });
+  });
+
   it('should not place order if provided food id doesn\'t exist', (done) => {
     chai.request(app)
       .post('/api/v1/orders')
@@ -278,7 +295,7 @@ describe('PUT /orders/:id', () => {
 
   it('should not update the status of a non-existent order', (done) => {
     chai.request(app)
-      .put('/api/v1/orders/2')
+      .put('/api/v1/orders/5')
       .set('x-auth', generateValidToken(users.admin))
       .send({ status: 'complete' })
       .end((err, res) => {

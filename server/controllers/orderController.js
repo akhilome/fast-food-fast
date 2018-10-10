@@ -60,7 +60,7 @@ class OrderController {
       });
     }
 
-    if (typeof foodId !== 'number') {
+    if (Number.isNaN(Number(foodId))) {
       return res.status(400).json({
         status: 'error',
         message: 'invalid data provided',
