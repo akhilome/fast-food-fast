@@ -7,6 +7,7 @@ class Sanitize {
       email,
       password,
       confirmPassword,
+      adminSecret,
     } = req.body;
 
     const missingFields = [name, email, password, confirmPassword].map((field, index) => {
@@ -36,6 +37,7 @@ class Sanitize {
     req.name = name.trim();
     req.email = email.trim();
     req.password = password.trim();
+    req.adminSecret = adminSecret;
     return next();
   }
 
