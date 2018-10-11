@@ -5,7 +5,7 @@ import AuthHandler from '../middleware/authHandler';
 
 const router = new Router();
 
-router.post('/signup', Sanitize.signup, AuthController.signup);
+router.post('/signup', Sanitize.signup, AuthController.signup, AuthController.signin, AuthHandler.generateAuthToken);
 router.post('/login', Sanitize.signin, AuthController.signin, AuthHandler.generateAuthToken);
 
 export default router;

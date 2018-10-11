@@ -22,6 +22,7 @@ class AuthHandler {
     res.status(200).json({
       status: 'success',
       message: 'user logged in successfully',
+      id: userId,
       auth_token: token,
     });
   }
