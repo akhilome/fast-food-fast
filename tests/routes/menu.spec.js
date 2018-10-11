@@ -92,15 +92,16 @@ describe('GET /menu', () => {
       });
   });
 
-  it('should not get menu if user not logged in', (done) => {
+  it('should still get menu if user not logged in', (done) => {
     chai.request(app)
       .get('/api/v1/menu')
       .set('x-auth', '')
       .end((err, res) => {
         if (err) done(err);
 
-        res.status.should.eql(401);
-        res.body.status.should.eql('error');
+        res.status.should.eql(200);
+        res.body.message.should.eql('menu fetched successfully');
+        res.body.menu.should.be.an('array');
         done();
       });
   });
