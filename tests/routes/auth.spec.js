@@ -18,12 +18,10 @@ describe('POST /auth/signup', () => {
       .end((err, res) => {
         if (err) done(err);
 
-        res.status.should.eql(201);
-        res.body.should.be.an('object').that.has.keys(['status', 'message', 'user']);
+        res.status.should.eql(200);
+        res.body.should.be.an('object').that.has.keys(['status', 'message', 'id', 'auth_token']);
         res.body.status.should.eql('success');
-        res.body.user.should.have.keys(['id', 'name', 'email']);
-        res.body.user.name.should.eql(users.admin.name);
-        res.body.user.email.should.eql(users.admin.email);
+        res.body.id.should.eql(users.admin.id);
         done();
       });
   });
@@ -35,12 +33,10 @@ describe('POST /auth/signup', () => {
       .end((err, res) => {
         if (err) done(err);
 
-        res.status.should.eql(201);
-        res.body.should.be.an('object').that.has.keys(['status', 'message', 'user']);
+        res.status.should.eql(200);
+        res.body.should.be.an('object').that.has.keys(['status', 'message', 'id', 'auth_token']);
         res.body.status.should.eql('success');
-        res.body.user.should.have.keys(['id', 'name', 'email']);
-        res.body.user.name.should.eql(users.validUser.name);
-        res.body.user.email.should.eql(users.validUser.email);
+        res.body.id.should.eql(users.validUser.id);
         done();
       });
   });
@@ -125,7 +121,8 @@ describe('POST /auth/login', () => {
         if (err) done(err);
 
         res.status.should.eql(200);
-        res.body.should.be.an('object').which.has.keys(['status', 'message', 'auth_token']);
+        res.body.should.be.an('object').which.has.keys(['status', 'message', 'id', 'auth_token']);
+        res.body.id.should.eql(users.validUser.id);
         done();
       });
   });
