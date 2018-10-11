@@ -5,7 +5,7 @@ import Sanitize from '../middleware/sanitizer';
 
 const router = new Router();
 
-router.get('/', AuthHandler.authorize, MenuController.getMenu);
+router.get('/', MenuController.getMenu);
 router.post(
   '/',
   AuthHandler.authorize,
