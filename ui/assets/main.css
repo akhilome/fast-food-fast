@@ -134,51 +134,6 @@ img.food {
   margin-bottom: 50px;
 }
 
-/* Frontpage 2 */
-.outline {
-  display: flex;
-  flex-direction: column;
-  margin: 20px auto;  
-}
-
-.outline h1 {
-  font-size: 1.8rem;
-  font-family: 'Comfortaa', cursive;
-  padding: 25px 15px;
-  text-align: center;
-}
-
-.outline-inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
-
-.outline-inner > div {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  min-height: 480px;
-  text-align: center;
-}
-
-/* Frontpage 3 */
-.admin {
-  align-items: center;
-  background: #eee;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 360px;
-}
-
-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 30px;
-}
-
 /* Wrapper */
 .wrapper {
   align-items: center;
@@ -316,6 +271,13 @@ fieldset > div {
 .order-card__admin--new {
   background: #2a9971;
   color: #fff;
+}
+
+/* Footer */
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
 }
 
 /* Media Queries */
