@@ -205,6 +205,66 @@ fieldset > div {
   margin: 10px auto;
 }
 
+/* Food Menu */
+.food-menu {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 860px;
+  justify-content: space-evenly;
+}
+
+.food-card {
+  box-shadow: 0 2px 4px -2px rgba(36, 18, 77, .2);
+  display: flex;
+  flex-direction: column;
+  margin: 15px 10px;
+  max-height: 350px;
+  max-width: 250px;
+}
+
+.food-image {
+  height: 200px;
+  width: 250px;
+}
+
+.food-details {
+  align-items: center;
+  background: #2a9971;
+  color: #fff;
+  border-radius: 0 0 6px 6px;
+  border-top: none;
+  display: flex;
+  justify-content: space-between;
+  max-height: 100px;
+  padding: 5px 15px;
+}
+
+.food-details__legend {
+  line-height: 1.2;
+  text-align: left;
+}
+
+.food-details__legend > * {
+  font-size: 16px;
+  margin: 10px auto;
+}
+
+.food-details__legend > p {
+  font-size: .9rem;
+}
+
+.food-details__action > button {
+  border: 1px dashed #fff;
+  background: transparent;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+.food-details__action > button:hover {
+  background: #fff;
+  color: #1d6b4f;
+}
+
 /* Order History */
 .order-history {
   display: flex;
