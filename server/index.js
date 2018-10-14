@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 import authRouter from './routes/authRouter';
 import ordersRouter from './routes/ordersRouter';
@@ -8,6 +9,9 @@ import menuRouter from './routes/menuRouter';
 
 dotenv.config();
 const app = express();
+
+// Enable CORS
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.status(200).json({
