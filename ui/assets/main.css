@@ -85,6 +85,11 @@ button:hover {
   background: #666;
 }
 
+button.small {
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
 button.danger {
   background: #b82e33;
 }
@@ -132,51 +137,45 @@ img.food {
 .hero h2 {
   font-size: 2.6rem;
   margin-bottom: 50px;
-}
-
-/* Frontpage 2 */
-.outline {
-  display: flex;
-  flex-direction: column;
-  margin: 20px auto;  
-}
-
-.outline h1 {
-  font-size: 1.8rem;
-  font-family: 'Comfortaa', cursive;
-  padding: 25px 15px;
   text-align: center;
 }
 
-.outline-inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+/* Login & Sign Up Pages*/
+body.auth {
+  background: url('./images/hamburger.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
 }
 
-.outline-inner > div {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  min-height: 480px;
-  text-align: center;
-}
-
-/* Frontpage 3 */
-.admin {
-  align-items: center;
-  background: #eee;
-  display: flex;
-  flex-direction: column;
+div.auth {
+  min-height: 100vh;
   justify-content: center;
-  min-height: 360px;
 }
 
-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 30px;
+/* Flash Messages */
+.flash-message {
+  width: 100%;
+  text-align: center;
+  height: 25px;
+  position: fixed;
+  background: #17a2b8;
+  padding: 20px 25px;
+  color: #fff;
+  font-family: 'Comfortaa', cursive;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: all 0.5s ease-in-out;
+  top: calc(100vh - 65px); 
+}
+
+.flash-message_success {
+  background: #1d6b4f;
+}
+
+.flash-message_error {
+  background: #b82e33;
 }
 
 /* Wrapper */
@@ -184,7 +183,6 @@ footer {
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-height: calc(100vh - 200px);
 }
 
@@ -204,8 +202,9 @@ input {
   border-radius: 6px;
   display: block;
   margin: 10px;
-  padding: 15px 30px;
-  width: 180px;
+  padding: 15px 20px;
+  text-align: center;
+  width: 200px;
 }
 
 input::placeholder {
@@ -233,6 +232,101 @@ fieldset > div {
   display: flex;
   padding: 10px 20px;
   margin: 10px auto;
+}
+
+/* Food Menu */
+.food-menu {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 860px;
+  justify-content: space-evenly;
+}
+
+.food-card {
+  box-shadow: 0 2px 4px -2px rgba(36, 18, 77, .2);
+  display: flex;
+  flex-direction: column;
+  margin: 15px 10px;
+  max-height: 350px;
+  max-width: 250px;
+}
+
+.food-image {
+  height: 200px;
+  width: 250px;
+}
+
+.food-details {
+  align-items: center;
+  background: #2a9971;
+  color: #fff;
+  border-radius: 0 0 6px 6px;
+  border-top: none;
+  display: flex;
+  justify-content: space-between;
+  max-height: 100px;
+  padding: 5px 15px;
+}
+
+.food-details__legend {
+  line-height: 1.2;
+  text-align: left;
+}
+
+.food-details__legend > * {
+  font-size: 16px;
+  margin: 10px auto;
+}
+
+.food-details__legend > p {
+  font-size: .9rem;
+}
+
+.food-details__action > button {
+  border: 1px dashed #fff;
+  background: transparent;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+.food-details__action > button:hover {
+  background: #fff;
+  color: #1d6b4f;
+}
+
+/* Cart */
+.checkout {
+  max-width: 720px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.food-card-checkout {
+  align-items: center;
+  border: 1px solid #2a9971;
+  border-radius: 4px;
+  display: flex;
+  height: 100px;
+  justify-content: space-around;
+  margin: 20px 10px;
+  width: 300px;
+}
+
+.food-card-checkout__details {
+  line-height: 1.5;
+  text-align: left;
+}
+
+.food-card-checkout__details > * {
+  font-size: 16px;
+  margin: 10px auto;
+}
+
+.food-card-checkout > button {
+  background: #b82e33;
+  font-size: 12px;
+  padding: 8px 12px;
 }
 
 /* Order History */
@@ -297,25 +391,11 @@ fieldset > div {
   max-width: 960px;
 }
 
-.admin-menu {
-  max-width: 720px;
-}
-
-.order-card__admin {
-  border: 2px solid #2a9971;
-  background: #fff;
-  color: #333;
-}
-
-.order-card__admin button {
-  font-size: 12px;
-  padding: 8px 10px;
-  font-weight: 400;
-}
-
-.order-card__admin--new {
-  background: #2a9971;
-  color: #fff;
+/* Footer */
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
 }
 
 /* Media Queries */

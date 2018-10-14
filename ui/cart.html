@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="assets/main.css">
-  <title>Add Food To Menu</title>
+  <title>Food Menu</title>
 </head>
 <body>
   <header>
@@ -16,23 +16,16 @@
     <nav>
       <a href="#" class="nav-mobile">☰ menu</a>
       <ul>
-        <li><a href="orders.html">All Orders</a></li>
-        <li><a href="admin-menu.html">All Food Items</a></li>
-        <li><a href="#">Log Out</a></li>
+        <li><a href="menu.html">Food Menu</a></li>
       </ul>
     </nav>
   </header>
 
-  <div class="wrapper">    
-    <section class="container">
-      <h2>Add New Food Item</h2>
-      <form>
-        <input type="text" name="food-item" placeholder="Food Name" required>
-        <input type="text" name="food-image" placeholder="Food Image URL">
-        <input type="number" name="food-price" placeholder="Price" required>
-        <input type="submit" name="submit" value="Add" class="btn-primary">
-      </form>
+  <div class="wrapper">
+    <h2>Items To Be Purchased</h2>
+    <section class="container checkout">
     </section>
+    <button class="btn-primary" id="checkout">Checkout</button>
   </div>
 
   <footer>
@@ -43,7 +36,8 @@
       <p>&copy; 2018</p>
     </div>
   </footer>
-  
+  </body>
+
   <script src="assets/main.js"></script>
-</body>
+  <script src="assets/js/checkout.js"></script>
 </html>
