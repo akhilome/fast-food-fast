@@ -85,6 +85,11 @@ button:hover {
   background: #666;
 }
 
+button.small {
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
 button.danger {
   background: #b82e33;
 }
@@ -384,27 +389,6 @@ fieldset > div {
   flex-wrap: wrap;
   justify-content: space-around;
   max-width: 960px;
-}
-
-.admin-menu {
-  max-width: 720px;
-}
-
-.order-card__admin {
-  border: 2px solid #2a9971;
-  background: #fff;
-  color: #333;
-}
-
-.order-card__admin button {
-  font-size: 12px;
-  padding: 8px 10px;
-  font-weight: 400;
-}
-
-.order-card__admin--new {
-  background: #2a9971;
-  color: #fff;
 }
 
 /* Footer */
