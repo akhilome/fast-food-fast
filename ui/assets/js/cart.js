@@ -1,10 +1,10 @@
-// Get all buttons
-const buyButtons = document.querySelectorAll('.food-details__action > button');
+function addToCart(e) {
+  if (!e.target.matches('button')) return; // event delegation
+  const button = e.target;
 
-function addToCart() {
-  if(!localStorage.getItem('cart')) localStorage.setItem('cart', '{}');
-  const cart = JSON.parse(localStorage.getItem('cart'));
-  const foodDetails = this.parentNode.previousElementSibling;
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+  const foodDetails = button.parentNode.previousElementSibling;
   const foodImage = foodDetails.parentNode.previousElementSibling.src;
   const foodId = foodDetails.dataset.foodid
   const foodName = foodDetails.querySelector('h4').innerText;
@@ -20,6 +20,5 @@ function addToCart() {
   flashMessage('Item added to cart', 'success');
 }
 
-
 // Event Listeners
-buyButtons.forEach(button => button.addEventListener('click', addToCart));
+document.querySelector('section.food-menu').addEventListener('click', addToCart);
