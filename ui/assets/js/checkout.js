@@ -18,10 +18,9 @@ function checkoutCardBlueprint(id, foodName, foodPrice) {
     return document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
   }
 
-  const formatted = [];
-  for (const food in cartItems) {
-    formatted.push(checkoutCardBlueprint(food, cartItems[food].foodName, cartItems[food].foodPrice));
-  }
+  const formatted = Object.keys(cartItems)
+    .map(food => checkoutCardBlueprint(food, cartItems[food].foodName, cartItems[food].foodPrice));
+
   document.querySelector('section.checkout').innerHTML = formatted.join('');
 })();
 
