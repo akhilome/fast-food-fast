@@ -23,5 +23,5 @@ function flashMessage(message, type) {
   body.insertBefore(messageDiv, document.querySelector('header'));
   setTimeout(() => {
     body.querySelector('.flash-message').remove();
-  }, 1500);
+  }, 2000);
 }
