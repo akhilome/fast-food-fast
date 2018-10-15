@@ -54,3 +54,11 @@ try {
     <li><a href="sign-up.html">Sign Up</a></li>
   `;
 }
+
+// Logout
+function logout() {
+  localStorage.removeItem('kiakiafoodToken');
+  window.location = 'index.html';
+}
+
+document.querySelector('#logout').addEventListener('click', logout);
