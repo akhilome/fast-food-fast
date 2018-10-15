@@ -12,7 +12,7 @@ function checkoutCardBlueprint(id, foodName, foodPrice) {
 
 // Populate Cart Items on Page Load
 (() => {
-  const cartItems = JSON.parse(localStorage.getItem('cart'));
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || {};
   if(!Object.keys(cartItems).length) {
     document.querySelector('#checkout').remove();
     return document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
