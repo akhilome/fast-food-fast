@@ -19,9 +19,10 @@ describe('POST /auth/signup', () => {
         if (err) done(err);
 
         res.status.should.eql(200);
-        res.body.should.be.an('object').that.has.keys(['status', 'message', 'id', 'auth_token']);
+        res.body.should.be.an('object').that.has.keys(['status', 'message', 'user']);
         res.body.status.should.eql('success');
-        res.body.id.should.eql(users.admin.id);
+        res.body.user.should.be.an('object').that.has.keys(['id', 'auth_token']);
+        res.body.user.id.should.eql(users.admin.id);
         done();
       });
   });
@@ -34,9 +35,10 @@ describe('POST /auth/signup', () => {
         if (err) done(err);
 
         res.status.should.eql(200);
-        res.body.should.be.an('object').that.has.keys(['status', 'message', 'id', 'auth_token']);
+        res.body.should.be.an('object').that.has.keys(['status', 'message', 'user']);
         res.body.status.should.eql('success');
-        res.body.id.should.eql(users.validUser.id);
+        res.body.user.should.be.an('object').that.has.keys(['id', 'auth_token']);
+        res.body.user.id.should.eql(users.validUser.id);
         done();
       });
   });
@@ -121,8 +123,9 @@ describe('POST /auth/login', () => {
         if (err) done(err);
 
         res.status.should.eql(200);
-        res.body.should.be.an('object').which.has.keys(['status', 'message', 'id', 'auth_token']);
-        res.body.id.should.eql(users.validUser.id);
+        res.body.should.be.an('object').which.has.keys(['status', 'message', 'user']);
+        res.body.user.should.be.an('object').which.has.keys(['id', 'auth_token']);
+        res.body.user.id.should.eql(users.validUser.id);
         done();
       });
   });
@@ -147,7 +150,7 @@ describe('POST /auth/login', () => {
         if (err) done(err);
 
         res.status.should.eql(400);
-        res.body.should.not.have.keys(['auth_token']);
+        res.body.should.not.have.keys(['user']);
         res.body.message.should.eql('invalid email or password provided');
         done();
       });
@@ -161,7 +164,7 @@ describe('POST /auth/login', () => {
         if (err) done(err);
 
         res.status.should.eql(400);
-        res.body.should.not.have.keys(['auth_token']);
+        res.body.should.not.have.keys(['user']);
         res.body.message.should.eql('invalid email or password provided');
         done();
       });
@@ -175,7 +178,7 @@ describe('POST /auth/login', () => {
         if (err) done(err);
 
         res.status.should.eql(400);
-        res.body.should.not.have.keys(['auth_token']);
+        res.body.should.not.have.keys(['user']);
         done();
       });
   });
