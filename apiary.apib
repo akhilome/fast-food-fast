@@ -15,7 +15,8 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
             "name": "User's name",
             "email": "User's valid email",
             "password": "A password longer than 6 chars",
-            "confirmPassWord": "The above password, again"
+            "confirmPassWord": "The above password, again",
+            "adminSecret": "secret key for signing up admins [optional]"
         }
         
 + Response 201 (application/json)
@@ -24,11 +25,10 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
             
             {
               "status": "success",
-              "message": "user created successfully",
+              "message": "user logged in successfully",
               "user":  {
                   "id": <id>
-                  "name": "<name>"
-                  "email": "<email>"
+                  "auth_token": "generated auth token"
                 }
             }
             
@@ -48,7 +48,10 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
             {
                 "status": "success",
                 "message": "user logged in successfully",
-                "auth_token": "valid jwt generated"
+                "user":  {
+                  "id": <id>
+                  "auth_token": "generated auth token"
+                }
             }
             
 ## Orders [/orders]

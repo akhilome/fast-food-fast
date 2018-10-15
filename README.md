@@ -70,7 +70,8 @@ then access any of the endpoints listed below
   "name": "User's name",
   "email": "User's valid email",
   "password": "A password longer than 6 chars",
-  "confirmPassWord": "The above password, again"
+  "confirmPassWord": "The above password, again",
+  "adminSecret": "secret key for signing up admins [optional]"
 }
 ```
 
