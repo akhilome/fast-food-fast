@@ -4,7 +4,7 @@ import orderFormatter from '../middleware/formatter';
 class OrderController {
   static async getAllOrders(req, res) {
     try {
-      const dbQuery = 'SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
+      const dbQuery = 'SELECT orders.id, orders.items, orders.price, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
       const allOrders = (await pool.query(dbQuery)).rows;
       const formattedOrders = orderFormatter(allOrders);
 
@@ -26,7 +26,7 @@ class OrderController {
     }
 
     try {
-      const allOrders = (await pool.query('SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id')).rows;
+      const allOrders = (await pool.query('SELECT orders.id, orders.items, orders.price, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id')).rows;
 
       const formattedOrders = orderFormatter(allOrders);
       const targetOrder = formattedOrders.find(order => order.id === Number(id));
@@ -44,26 +44,20 @@ class OrderController {
   }
 
   static async newOrder(req, res) {
-    const { foodItems } = req;
+    const { foodItems, foodItemsTotalPrice } = req;
 
-    const dbInsertQuery = 'INSERT INTO orders(items, author) VALUES($1, $2)';
-    const dbSelectQuery = 'SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
+    const dbInsertQuery = 'INSERT INTO orders(items, price, author) VALUES($1, $2, $3)';
+    const dbSelectQuery = 'SELECT orders.id, orders.items, orders.price, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
 
     try {
-      await pool.query(dbInsertQuery, [JSON.stringify(foodItems), req.userId]);
+      await pool.query(dbInsertQuery, [JSON.stringify(foodItems), foodItemsTotalPrice, req.userId]);
       const allOrders = (await pool.query(dbSelectQuery));
-      const newOrder = allOrders.rows[allOrders.rowCount - 1];
+      const newOrder = (orderFormatter(allOrders.rows))[allOrders.rowCount - 1];
 
       return res.status(201).json({
         status: 'success',
         message: 'new order placed successfully',
-        order: {
-          id: newOrder.id,
-          author: newOrder.name,
-          items: JSON.parse(newOrder.items),
-          date: newOrder.date,
-          status: newOrder.status,
-        },
+        order: newOrder,
       });
     } catch (error) {
       return res.status(500).json();
@@ -79,7 +73,7 @@ class OrderController {
       if (!orderExists) return res.status(404).json({ status: 'error', message: 'no order with that id exists' });
 
       await pool.query('UPDATE orders SET status=$1 WHERE id=$2', [req.status, Number(id)]);
-      const updatedOrders = (await pool.query('SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id')).rows;
+      const updatedOrders = (await pool.query('SELECT orders.id, orders.items, orders.price, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id')).rows;
 
       const formattedOrders = orderFormatter(updatedOrders);
       const targetOrder = formattedOrders.find(order => order.id === Number(id));
@@ -107,7 +101,12 @@ class OrderController {
     try {
       const userOrders = (await pool.query('SELECT * FROM orders WHERE author=$1', [id])).rows;
       const formattedUserOrders = userOrders
-        .map(order => ({ items: JSON.parse(order.items), date: order.date, status: order.status }));
+        .map(order => ({
+          items: JSON.parse(order.items),
+          price: order.price,
+          date: order.date,
+          status: order.status,
+        }));
       return res.status(200).json({
         status: 'success',
         message: 'orders fetched successfully',

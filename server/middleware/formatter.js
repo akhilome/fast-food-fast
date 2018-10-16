@@ -4,6 +4,7 @@ const formatOrders = (orders) => {
       id: foundOrder.id,
       author: foundOrder.name,
       items: JSON.parse(foundOrder.items),
+      price: foundOrder.price,
       date: foundOrder.date,
       status: foundOrder.status,
     };
