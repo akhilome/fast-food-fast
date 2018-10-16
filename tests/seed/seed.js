@@ -90,6 +90,7 @@ const emptyTables = async () => {
   const createOrdersTableQuery = `CREATE TABLE orders (
     id serial PRIMARY KEY,
     items TEXT NOT NULL,
+    price REAL NOT NULL,
     author INTEGER REFERENCES users(id),
     date DATE NOT NULL DEFAULT CURRENT_DATE,
     status VARCHAR(50) NOT NULL DEFAULT 'new'
