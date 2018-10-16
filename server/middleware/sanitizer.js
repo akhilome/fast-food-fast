@@ -112,12 +112,8 @@ class Sanitize {
       || !Validator.isArray(foodIds)
       || !foodIds.length
       || !Validator.isArrayOfNumbers(foodIds)
-    ) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'foodIds should be an array of numbers',
-      });
-    }
+    ) return res.status(400).json({ status: 'error', message: 'foodIds should be an array of numbers' });
+
     const { allFoodExists, allFoodItems } = await Validator.isArrayOfValidFoodIds(foodIds);
     if (!allFoodExists) {
       return res.status(404).json({
@@ -129,7 +125,13 @@ class Sanitize {
     const foodItems = foodIds
       .map(foodId => allFoodItems.find(foodItem => foodItem.id === Number(foodId)).food_name);
 
+    // Calculate total price of all requested food items
+    const foodItemsTotalPrice = foodIds
+      .map(foodId => allFoodItems.find(foodItem => foodItem.id === Number(foodId)).price)
+      .reduce((accumulator, current) => accumulator + current);
+
     req.foodItems = foodItems;
+    req.foodItemsTotalPrice = foodItemsTotalPrice;
     return next();
   }
 }

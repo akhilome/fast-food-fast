@@ -22,7 +22,7 @@ describe('POST /orders', () => {
         res.status.should.eql(201);
         res.body.status.should.eql('success');
         res.body.order.should.be.an('object');
-        res.body.order.should.have.keys(['id', 'author', 'items', 'date', 'status']);
+        res.body.order.should.have.keys(['id', 'author', 'items', 'price', 'date', 'status']);
         res.body.order.items.should.be.an('array');
         res.body.order.items.length.should.eql(2);
         res.body.order.status.should.eql('new');
@@ -41,7 +41,7 @@ describe('POST /orders', () => {
         res.status.should.eql(201);
         res.body.status.should.eql('success');
         res.body.order.should.be.an('object');
-        res.body.order.should.have.keys(['id', 'author', 'items', 'date', 'status']);
+        res.body.order.should.have.keys(['id', 'author', 'items', 'price', 'date', 'status']);
         res.body.order.items.should.be.an('array');
         res.body.order.items.length.should.eql(2);
         res.body.order.status.should.eql('new');
@@ -167,7 +167,7 @@ describe('GET /orders', () => {
         res.body.should.have.keys(['status', 'message', 'orders']);
         res.body.orders.should.be.an('array');
         res.body.orders[0].should.be.an('object');
-        res.body.orders[0].should.be.have.keys(['id', 'author', 'items', 'date', 'status']);
+        res.body.orders[0].should.be.have.keys(['id', 'author', 'items', 'price', 'date', 'status']);
         res.body.orders[0].items.should.be.an('array');
         done();
       });
@@ -234,7 +234,7 @@ describe('GET /orders/:id', () => {
         res.status.should.eql(200);
         res.body.should.have.keys(['status', 'message', 'order']);
         res.body.order.should.be.an('object');
-        res.body.order.should.have.all.keys(['id', 'items', 'author', 'date', 'status']);
+        res.body.order.should.have.all.keys(['id', 'items', 'price', 'author', 'date', 'status']);
         res.body.order.items.should.be.an('array');
         done();
       });
