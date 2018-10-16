@@ -234,7 +234,8 @@ describe('GET /orders/:id', () => {
         res.status.should.eql(200);
         res.body.should.have.keys(['status', 'message', 'order']);
         res.body.order.should.be.an('object');
-        res.body.order.should.have.all.keys(['id', 'author', 'date', 'status', 'title']);
+        res.body.order.should.have.all.keys(['id', 'items', 'author', 'date', 'status']);
+        res.body.order.items.should.be.an('array');
         done();
       });
   });

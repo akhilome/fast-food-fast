@@ -29,7 +29,7 @@ class OrderController {
     }
 
     try {
-      const allOrders = (await pool.query('SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id')).rows;
+      const allOrders = (await pool.query('SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id')).rows;
 
       const formattedOrders = orderFormatter(allOrders);
       const targetOrder = formattedOrders.find(order => order.id === Number(id));
