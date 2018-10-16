@@ -88,7 +88,7 @@ then access any of the endpoints listed below
 
 ```json
 {
-  "foodId": "valid food id"
+  "foodIds": [1, 2, 3]
 }
 ```
 

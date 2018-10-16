@@ -61,7 +61,7 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
 + Request (application/json)
     
         {
-            "foodId": "valid food id"
+            "foodIds": ['food id 1', 'food id 2', '...']
         }
         
 + Response 200 (application/json)
@@ -72,51 +72,38 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
           "order": {
             "id": "order id",
             "author": "order author",
-            "title": "Food title",
+            "items": ["Food 1 Name", "Food 2 Name", "..."],
+            "price": "order price"
             "date": "order date",
-            "status" "order status"
+            "status": "order status"
           }
         }
     
 + Request (application/json)
     
         {
-            "foodId": "invalid food id(strings)"
+            "foodIds": "[invalid food id(strings)]"
         }
         
 + Response 400 (application/json)
 
         {
           "status": "error",
-          "message": "invalid data provided"
+          "message": "foodIds should be an array of numbers"
         }
 
 
 + Request (application/json)
     
         {
-            "foodId": ""
+            "foodIds": "[valid, but non-existent food id]"
         }
         
 + Response 400 (application/json)
 
         {
           "status": "error",
-          "message": "incomplete data"
-        }
-
-
-+ Request (application/json)
-    
-        {
-            "foodId": "valid non-existent food id"
-        }
-        
-+ Response 400 (application/json)
-
-        {
-          "status": "error",
-          "message": "no such food exists"
+          "message": "one of the requested food items does not exist"
         }
         
 ### Get All Orders [GET /orders]
@@ -130,21 +117,24 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
             {
               "id": "order id",
               "author": "order author",
-              "title": "Food title",
+              "items": ["Food 1 Name", "Food 2 Name", "..."],
+              "price": "total order price",
               "date": "order date",
               "status": "order status"
             },
             {
               "id": "order id",
               "author": "order author",
-              "title": "Food title",
+              "items": ["Food 1 Name", "Food 2 Name", "..."],
+              "price": "total order price",
               "date": "order date",
               "status": "order status"
             },
             {
               "id": "order id",
               "author": "order author",
-              "title": "Food title",
+              "items": ["Food 1 Name", "Food 2 Name", "..."],
+              "price": "total order price",
               "date": "order date",
               "status": "order status"
             }
@@ -159,12 +149,13 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
           "status": "success",
           "message": "order fetched successfully",
           "order": {
-            "id": "order id",
-            "author": "order author",
-            "title": "Food title",
-            "date": "order date",
-            "status": "order status"
-          }
+              "id": "order id",
+              "author": "order author",
+              "items": ["Food 1 Name", "Food 2 Name", "..."],
+              "price": "total order price",
+              "date": "order date",
+              "status": "order status"
+            }
         }
 
 ### Update Order Status [PUT /orders/:id]
@@ -172,15 +163,16 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
 + Response 200 (application/json)
 
         {
-            "status": "success",
-            "message": "order status updated successfully",
-            "order": {
-                "id": "order id",
-                "author": "order author",
-                "title": "Food title",
-                "date": "order date",
-                "status": "new order status"
-            }
+          "status": "success",
+          "message": "order status updated successfully",
+          "order": {
+            "id": "order id",
+            "author": "order author",
+            "items": ["Food 1 Name", "Food 2 Name", "..."],
+            "price": "total order price",
+            "date": "order date",
+            "status": "new order status"
+          }
         }
         
 ## Menu [/menu]
@@ -242,15 +234,17 @@ Sign up and place orders for tasty **fast food** and get it **fast**.
 
         {
           "status": "success",
-          "message": "orders for user <id> fetched successfully",
+          "message": "orders fetched successfully",
           "orders": [
             {
-              "name": "Food 1 Name",
+              "items": ["Food 1 Name", "Food 2 Name", "..."],
+              "price": "total order price",
               "date": "Order date",
               "status": "Order status"
             },
             {
-              "name": "Food 2 Name",
+              "items": ["Food 1 Name", "Food 2 Name", "..."],
+              "price": "total order price",
               "date": "Order date",
               "status": "Order status"
             }
