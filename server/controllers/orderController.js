@@ -52,38 +52,13 @@ class OrderController {
   }
 
   static async newOrder(req, res) {
-    const { foodId } = req.body;
-    if (!foodId) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'incomplete data',
-      });
-    }
+    const { foodItems } = req;
 
-    if (Number.isNaN(Number(foodId))) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'invalid data provided',
-      });
-    }
-    try {
-      const foodExists = (await pool.query('SELECT * FROM menu WHERE id=$1', [foodId])).rowCount;
-
-      if (!foodExists) {
-        return res.status(400).json({
-          status: 'error',
-          message: 'no such food exists',
-        });
-      }
-    } catch (error) {
-      res.status(500).json(error);
-    }
-
-    const dbInsertQuery = 'INSERT INTO orders(item, author) VALUES($1, $2)';
-    const dbSelectQuery = 'SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id';
+    const dbInsertQuery = 'INSERT INTO orders(items, author) VALUES($1, $2)';
+    const dbSelectQuery = 'SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
 
     try {
-      await pool.query(dbInsertQuery, [foodId, req.userId]);
+      await pool.query(dbInsertQuery, [JSON.stringify(foodItems), req.userId]);
       const allOrders = (await pool.query(dbSelectQuery));
       const newOrder = allOrders.rows[allOrders.rowCount - 1];
 
@@ -93,7 +68,7 @@ class OrderController {
         order: {
           id: newOrder.id,
           author: newOrder.name,
-          title: newOrder.food_name,
+          items: JSON.parse(newOrder.items),
           date: newOrder.date,
           status: newOrder.status,
         },

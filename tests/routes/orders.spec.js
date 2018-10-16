@@ -15,45 +15,49 @@ describe('POST /orders', () => {
     chai.request(app)
       .post('/api/v1/orders')
       .set('x-auth', generateValidToken(validUser))
-      .send({ foodId: 1 })
+      .send({ foodIds: [1, 2] })
       .end((err, res) => {
         if (err) done(err);
 
         res.status.should.eql(201);
         res.body.status.should.eql('success');
         res.body.order.should.be.an('object');
-        res.body.order.should.have.keys(['id', 'author', 'title', 'date', 'status']);
+        res.body.order.should.have.keys(['id', 'author', 'items', 'date', 'status']);
+        res.body.order.items.should.be.an('array');
+        res.body.order.items.length.should.eql(2);
         res.body.order.status.should.eql('new');
         done();
       });
   });
 
-  it('should successfuly place order for food if food id is string', (done) => {
+  it('should successfuly place order for food if any food id is string', (done) => {
     chai.request(app)
       .post('/api/v1/orders')
       .set('x-auth', generateValidToken(validUser))
-      .send({ foodId: '1' })
+      .send({ foodIds: ['1', 2] })
       .end((err, res) => {
         if (err) done(err);
 
         res.status.should.eql(201);
         res.body.status.should.eql('success');
         res.body.order.should.be.an('object');
-        res.body.order.should.have.keys(['id', 'author', 'title', 'date', 'status']);
+        res.body.order.should.have.keys(['id', 'author', 'items', 'date', 'status']);
+        res.body.order.items.should.be.an('array');
+        res.body.order.items.length.should.eql(2);
         res.body.order.status.should.eql('new');
         done();
       });
   });
 
-  it('should not place order if provided food id doesn\'t exist', (done) => {
+  it('should not place order if any provided food id doesn\'t exist', (done) => {
     chai.request(app)
       .post('/api/v1/orders')
       .set('x-auth', generateValidToken(validUser))
-      .send({ foodId: 2 })
+      .send({ foodIds: [1, 2, 6] })
       .end(async (err, res) => {
         if (err) done(err);
 
-        res.status.should.eql(400);
+        res.status.should.eql(404);
         res.body.should.not.have.keys(['order']);
         res.body.status.should.eql('error');
         done();
@@ -64,7 +68,7 @@ describe('POST /orders', () => {
     chai.request(app)
       .post('/api/v1/orders')
       .set('x-auth', generateValidToken(validUser))
-      .send({ foodId: 'something weird' })
+      .send({ foodIds: [1, 2, 'lol'] })
       .end((err, res) => {
         if (err) done(err);
 

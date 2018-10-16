@@ -73,6 +73,27 @@ describe('POST /menu', () => {
         done();
       });
   });
+
+  it('should add another new food item to the menu successfully', (done) => {
+    chai.request(app)
+      .post('/api/v1/menu')
+      .set('x-auth', generateValidToken(users.admin))
+      .send({
+        foodName: 'Turkey Wings',
+        foodImage: 'https://i.imgur.com/Bfn1CxC.jpg',
+        price: '1200',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(201);
+        res.body.should.be.an('object').which.has.all.keys(['status', 'message', 'food']);
+        res.body.food.should.have.all.keys(['id', 'food_name', 'food_image', 'price']);
+        res.body.food.food_name.should.eql('Turkey Wings');
+        res.body.food.price.should.eql(1200);
+        done();
+      });
+  });
 });
 
 describe('GET /menu', () => {
@@ -88,6 +109,7 @@ describe('GET /menu', () => {
         res.status.should.eql(200);
         res.body.message.should.eql('menu fetched successfully');
         res.body.menu.should.be.an('array');
+        res.body.menu.length.should.eql(2);
         done();
       });
   });
@@ -102,6 +124,7 @@ describe('GET /menu', () => {
         res.status.should.eql(200);
         res.body.message.should.eql('menu fetched successfully');
         res.body.menu.should.be.an('array');
+        res.body.menu.length.should.eql(2);
         done();
       });
   });

@@ -104,6 +104,34 @@ class Sanitize {
     req.price = price;
     return next();
   }
+
+  static async newOrder(req, res, next) {
+    const { foodIds } = req.body;
+
+    if (!foodIds
+      || !Validator.isArray(foodIds)
+      || !foodIds.length
+      || !Validator.isArrayOfNumbers(foodIds)
+    ) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'foodIds should be an array of numbers',
+      });
+    }
+    const { allFoodExists, allFoodItems } = await Validator.isArrayOfValidFoodIds(foodIds);
+    if (!allFoodExists) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'one of the requested food items does not exist',
+      });
+    }
+    // Create Array of requested food names.
+    const foodItems = foodIds
+      .map(foodId => allFoodItems.find(foodItem => foodItem.id === Number(foodId)).food_name);
+
+    req.foodItems = foodItems;
+    return next();
+  }
 }
 
 export default Sanitize;

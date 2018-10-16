@@ -6,7 +6,7 @@ import Sanitize from '../middleware/sanitizer';
 const router = new Router();
 
 router.get('/users/:id/orders', AuthHandler.authorize, OrderController.getAllUserOrders);
-router.post('/orders', AuthHandler.authorize, OrderController.newOrder);
+router.post('/orders', AuthHandler.authorize, Sanitize.newOrder, OrderController.newOrder);
 router.get('/orders', AuthHandler.authorize, AuthHandler.authorizeAdmin, OrderController.getAllOrders);
 
 router.get(
