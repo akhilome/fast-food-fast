@@ -167,6 +167,8 @@ describe('GET /orders', () => {
         res.body.should.have.keys(['status', 'message', 'orders']);
         res.body.orders.should.be.an('array');
         res.body.orders[0].should.be.an('object');
+        res.body.orders[0].should.be.have.keys(['id', 'author', 'items', 'date', 'status']);
+        res.body.orders[0].items.should.be.an('array');
         done();
       });
   });

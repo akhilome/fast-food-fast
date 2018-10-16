@@ -4,7 +4,7 @@ import orderFormatter from '../middleware/formatter';
 class OrderController {
   static async getAllOrders(req, res) {
     try {
-      const dbQuery = 'SELECT orders.id, menu.food_name, users.name, orders.date, orders.status FROM orders JOIN menu ON orders.item = menu.id JOIN users ON orders.author = users.id';
+      const dbQuery = 'SELECT orders.id, orders.items, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
       const allOrders = (await pool.query(dbQuery)).rows;
       const formattedOrders = orderFormatter(allOrders);
 

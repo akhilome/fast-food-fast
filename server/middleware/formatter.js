@@ -3,7 +3,7 @@ const formatOrders = (orders) => {
     const formatted = {
       id: foundOrder.id,
       author: foundOrder.name,
-      title: foundOrder.food_name,
+      items: JSON.parse(foundOrder.items),
       date: foundOrder.date,
       status: foundOrder.status,
     };
