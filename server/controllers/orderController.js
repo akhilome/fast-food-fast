@@ -22,10 +22,7 @@ class OrderController {
     const { id } = req.params;
 
     if (Number.isNaN(Number(id))) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'invalid order id format',
-      });
+      return res.status(400).json({ status: 'error', message: 'invalid order id format' });
     }
 
     try {
@@ -34,12 +31,7 @@ class OrderController {
       const formattedOrders = orderFormatter(allOrders);
       const targetOrder = formattedOrders.find(order => order.id === Number(id));
 
-      if (!targetOrder) {
-        return res.status(404).json({
-          status: 'error',
-          message: 'no such order exists',
-        });
-      }
+      if (!targetOrder) return res.status(404).json({ status: 'error', message: 'no such order exists' });
 
       return res.status(200).json({
         status: 'success',
