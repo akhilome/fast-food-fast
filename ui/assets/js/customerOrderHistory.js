@@ -50,11 +50,15 @@ fetch(url, {
   headers: { 'x-auth': token }
 }).then(data => data.json())
   .then((response) => {
-    const allUserOrders = response.orders
-      .map(order => orderCardBluePrint(order.items, order.price, order.date, order.status))
-      .join('');
-
-    document.querySelector('.order-history').innerHTML = allUserOrders;
+    if(!response.orders.length) {
+      document.querySelector('.order-history').innerHTML = '<p>You have not made any orders yet!</p>';
+    } else {
+      const allUserOrders = response.orders
+        .map(order => orderCardBluePrint(order.items, order.price, order.date, order.status))
+        .join('');
+  
+      document.querySelector('.order-history').innerHTML = allUserOrders;
+    }
   })
   .catch((error) => {
     console.error(error);
