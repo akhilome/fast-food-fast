@@ -449,7 +449,44 @@ fieldset > div {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  max-width: 960px;
+  max-width: 1024px;
+}
+
+.order-card_admin-actions{
+  margin-bottom: -20px;
+}
+
+.order-card_admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+button.accept,
+button.reject {
+  border-radius: 0;
+  width: 50%;
+}
+
+button.accept {
+  background: #2a9971;
+  border-bottom-left-radius: 4px;
+}
+
+button.reject {
+  background: #b82e33;
+  border-bottom-right-radius: 4px;
+}
+
+button.done {
+  background: #333;
+  border-radius: 0 0 4px 4px;
+  width: 100%;
+}
+
+button.accept:hover,
+button.reject:hover, 
+button.done:hover {
+  opacity: 0.8;
 }
 
 /* Footer */
