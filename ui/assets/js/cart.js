@@ -2,6 +2,16 @@ function addToCart(e) {
   if (!e.target.matches('button')) return; // event delegation
   const button = e.target;
 
+  // Prevent unauthenticated customer from adding to cart
+  try {
+    const token = localStorage.getItem('kiakiafoodToken');
+    jwt_decode(token);
+    if (!token) throw new Error();
+  } catch (error) {
+    return window.location = 'sign-in.html';
+  }
+
+
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
 
   const foodDetails = button.parentNode.previousElementSibling;
