@@ -10,11 +10,24 @@ function checkoutCardBlueprint(id, foodName, foodPrice) {
   `;
 }
 
+// compute order price
+const orderPrice = () => {
+  const cartItems = JSON.parse(localStorage.getItem('cart'));
+  // if (!Object.keys(cartItems).length) return;
+
+  return Object.keys(cartItems)
+    .map(foodId => cartItems[foodId].foodPrice)
+    .map(price => Number(price.split(',').join('').substr(1)))
+    .reduce((accum, current) => accum + current)
+    .toLocaleString();
+}
+
 // Populate Cart Items on Page Load
 (() => {
   const cartItems = JSON.parse(localStorage.getItem('cart')) || {};
   if(!Object.keys(cartItems).length) {
     document.querySelector('#checkout').remove();
+    document.querySelector('.order-price').remove();
     return document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
   }
 
@@ -22,9 +35,10 @@ function checkoutCardBlueprint(id, foodName, foodPrice) {
     .map(food => checkoutCardBlueprint(food, cartItems[food].foodName, cartItems[food].foodPrice));
 
   document.querySelector('section.checkout').innerHTML = formatted.join('');
+  document.querySelector('#order-price').textContent = orderPrice();
 })();
 
-//
+// Removing items from cart
 const removeButtons = document.querySelectorAll('.food-card-checkout > button')
 
 function removeFromCart() {
@@ -34,7 +48,15 @@ function removeFromCart() {
   delete cart[foodId];
 
   localStorage.setItem('cart', JSON.stringify(cart));
+
+  if (!Object.keys(cart).length) {
+    document.querySelector('.order-price').remove();
+    document.querySelector('#checkout').remove();
+    return document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
+  }
+
   foodCard.remove();
+  document.querySelector('#order-price').textContent = orderPrice();
 }
 
 removeButtons.forEach(button => button.addEventListener('click', removeFromCart));
