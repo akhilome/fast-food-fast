@@ -60,3 +60,40 @@ function removeFromCart() {
 }
 
 removeButtons.forEach(button => button.addEventListener('click', removeFromCart));
+
+// Initiate actual checkout
+let wrapper = document.querySelector('.wrapper');
+
+function buyFoodItems(e) {
+  if (!e.target.matches('#checkout')) return;
+
+  const foodIds = Object.keys(JSON.parse(localStorage.getItem('cart'))).map(Number);
+  flashMessage('placing your order ...');
+
+  const url = 'https://kiakiafood.herokuapp.com/api/v1/orders';
+  const token = localStorage.getItem('kiakiafoodToken');
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth': token
+    },
+    body: JSON.stringify({ foodIds })
+  })
+    .then(data => data.json())
+    .then(response => {
+      if (response.status !== 'success') return flashMessage(response.message, 'error');
+      flashMessage('Order placed!', 'success');
+      localStorage.removeItem('cart');
+      setTimeout(() => {
+        window.location = 'order-history.html';
+      }, 2000);
+    })
+    .catch(error => {
+      console.error(error);
+      flashMessage('Something went wrong while placing your order', 'error');
+    });
+}
+
+wrapper.addEventListener('click', buyFoodItems);
