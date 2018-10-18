@@ -30,6 +30,34 @@ class MenuController {
       res.status(500).json();
     }
   }
+
+  static async deleteFood(req, res) {
+    const { id } = req.params;
+
+    if (Number.isNaN(Number(id))) {
+      res.status(400).json({ status: 'error', message: 'invalid id type' });
+      return;
+    }
+
+    try {
+      const dbQuery = 'DELETE FROM menu WHERE id=$1 RETURNING *';
+      const deletedFood = (await pool.query(dbQuery, [Number(id)])).rows[0];
+
+      if (!deletedFood) {
+        res.status(404).json({
+          status: 'error',
+          message: 'no such food exists',
+        });
+      } else {
+        res.status(200).json({
+          status: 'success',
+          message: 'food item sucessfully removed from menu',
+        });
+      }
+    } catch (error) {
+      res.status(500).json();
+    }
+  }
 }
 
 export default MenuController;

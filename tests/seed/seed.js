@@ -104,8 +104,18 @@ const emptyTables = async () => {
   await pool.query(createOrdersTableQuery);
 };
 
+const populateMenu = async () => {
+  const dbQuery = `INSERT INTO menu(food_name, price)
+    VALUES
+    ('A snack!', 2000),
+    ('Interesting Biscuits', 200000);
+  `;
+  await pool.query(dbQuery);
+};
+
 export {
   users,
   emptyTables,
+  populateMenu,
   generateValidToken,
 };
