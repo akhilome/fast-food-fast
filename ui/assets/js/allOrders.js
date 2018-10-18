@@ -40,16 +40,23 @@ function adminOrderCardBluePrint(orderId, customerName, foodItems = [], date, st
 const url = 'https://kiakiafood.herokuapp.com/api/v1/orders';
 
 fetch(url, {
-  headers: { 'x-auth': token }
+  headers: { 'x-auth': token },
 }).then(data => data.json())
   .then((response) => {
-    if (!response.orders.length) {
+    const { orders } = response;
+    if (!orders.length) {
       document.querySelector('.admin-orders').innerHTML = '<p>No orders have been made yet!</p>';
     } else {
-      const allOrders = response.orders
-        .map(order => adminOrderCardBluePrint(order.id, order.author, order.items, order.date, order.status))
+      const allOrders = orders
+        .map(order => adminOrderCardBluePrint(
+          order.id,
+          order.author,
+          order.items,
+          order.date,
+          order.status,
+        ))
         .join('');
-  
+
       document.querySelector('.admin-orders').innerHTML = allOrders;
     }
   })

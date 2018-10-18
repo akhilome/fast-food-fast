@@ -1,10 +1,10 @@
 // Responsive menu
-document.querySelector('.nav-mobile').onclick = function() {
+document.querySelector('.nav-mobile').onclick = function toggleMobileMenu() {
   document.querySelector('nav ul').classList.toggle('open');
-}
+};
 
 // Flash Messages
-function flashMessage(message, type) {
+function flashMessage(message, type) { // eslint-disable-line
   const body = document.querySelector('body');
 
   const messageDiv = document.createElement('div');
@@ -15,7 +15,7 @@ function flashMessage(message, type) {
   if (type === 'success') {
     messageDiv.classList.add('flash-message_success');
   } else if (type === 'error') {
-    messageDiv.classList.add('flash-message_error')
+    messageDiv.classList.add('flash-message_error');
   } else {
     messageDiv.classList.add('flash-message');
   }
@@ -29,7 +29,7 @@ function flashMessage(message, type) {
 // Dynamic Navigation links
 try {
   const { userStatus } = (jwt_decode(localStorage.getItem('kiakiafoodToken')));
-  
+
   const customerNavLinks = `
     <li><a href="menu.html">Food Menu</a></li>
     <li><a href="order-history.html">Order History</a></li>

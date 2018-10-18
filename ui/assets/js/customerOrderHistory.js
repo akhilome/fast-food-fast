@@ -1,4 +1,4 @@
-function orderCardBluePrint(foodNames = [], orderPrice = 000, date, status) {
+function orderCardBluePrint(foodNames = [], orderPrice, date, status) {
   const formattedNames = foodNames
     .map(foodName => `<p>${foodName}</p>`).join('');
 
@@ -47,16 +47,15 @@ try {
 const url = `https://kiakiafood.herokuapp.com/api/v1/users/${decodedUserId}/orders`;
 
 fetch(url, {
-  headers: { 'x-auth': token }
+  headers: { 'x-auth': token },
 }).then(data => data.json())
   .then((response) => {
-    if(!response.orders.length) {
+    if (!response.orders.length) {
       document.querySelector('.order-history').innerHTML = '<p>You have not made any orders yet!</p>';
     } else {
       const allUserOrders = response.orders
         .map(order => orderCardBluePrint(order.items, order.price, order.date, order.status))
         .join('');
-  
       document.querySelector('.order-history').innerHTML = allUserOrders;
     }
   })

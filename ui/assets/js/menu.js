@@ -19,7 +19,7 @@ const source = 'https://kiakiafood.herokuapp.com/api/v1/menu';
 
 fetch(source)
   .then(data => data.json())
-  .then(response => {
+  .then((response) => {
     const foodItems = response.menu
       .map(food => foodCardBlueprint(food.id, food.food_name, food.food_image, food.price))
       .join('');
