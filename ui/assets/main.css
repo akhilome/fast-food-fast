@@ -477,10 +477,16 @@ button.reject {
   border-bottom-right-radius: 4px;
 }
 
-button.done {
+button.done,
+button.disabled {
   background: #333;
   border-radius: 0 0 4px 4px;
   width: 100%;
+}
+
+button.disabled {
+  background: #aaa;
+  cursor: not-allowed;
 }
 
 button.accept:hover,
