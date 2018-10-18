@@ -334,52 +334,113 @@ fieldset > div {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  max-width: 720px;
+  max-width: 1024px;
 }
 
 .order-card {
-  background: #2a9971;
-  border: none;
+  border: 1px solid #ddd;
   border-radius: 6px;
-  box-shadow: 0 2px 4px -2px rgba(36, 18, 77, .2);
-  color: #fff;
-  padding: 20px;
-  margin: 20px;
-  min-width: 200px;
-  transition: all 0.4s ease-in-out;
+  box-shadow: 0 2px 4px -2px rgba(36, 18, 77, .3);
+  color: #333;
+  display: table;
+  margin: 20px 15px;
+  padding: 20px 0;
+  width: 300px;
 }
 
-.order-card:hover {
-  box-shadow: 0 1px 20px rgba(0,0,0,.2);
-  transform: scale(1.05);
+.order-card > * {
+  border-bottom: 1px dotted #ddd;
+  margin: 5px auto;
 }
 
-.order-status-progress,
-.order-status-rejected,
-.order-status-completed {
-	color: #fff;
-	font-size: .8rem;
-	margin: auto;
+.order-card > *:last-child,
+.order-card > *:nth-last-child(2) {
+  border-bottom: none;
+}
+
+.order-card p {
+  font-size: 16px;
+}
+
+.order-card_food-items h3 {
+  border-bottom: 1px dotted #ddd;
+  font-family: 'Comfortaa', cursive;
+  font-size: 1em;
+  letter-spacing: -1px;
+  margin: 10px auto;
+  text-transform: lowercase;
+}
+
+.order-card_food-items_names {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.order-card_food-items_names > p,
+.order-card_price > p,
+.order-card_date > p {
+  flex-basis: 45%;
+  margin: 15px auto;
+}
+
+.order-card_food-items_names > p {
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  margin: 10px auto;
+}
+
+.order-card_price,
+.order-card_date {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-left: 40px;
+  text-align: left;
+}
+
+.order-status-new {
+  background: #333;
+}
+
+.order-status-new::after {
+  content: "new";
+}
+
+.order-status-progress {
+  background: #ffc900;
 }
 
 .order-status-progress::after {
   content: "in progress";
 }
 
+.order-status-completed {
+  background: #1d6b4f;
+}
+
 .order-status-completed::after {
   content: "completed";
+}
+
+.order-status-rejected {
+  background: #b82e33;
 }
 
 .order-status-rejected::after {
   content: "rejected";
 }
 
+.order-status-new::after,
 .order-status-progress::after,
 .order-status-rejected::after,
 .order-status-completed::after {
-  border: 1px solid #fff;
-  border-radius: 4px;
-  padding: 4px 6px;
+  color: #fff;
+  font-family: 'Comfortaa', cursive;
+  font-size: 0.85rem;
 }
 
 /* Admin Dashboard */
@@ -388,7 +449,50 @@ fieldset > div {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  max-width: 960px;
+  max-width: 1024px;
+}
+
+.order-card_admin-actions{
+  margin-bottom: -20px;
+}
+
+.order-card_admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+button.accept,
+button.reject {
+  border-radius: 0;
+  width: 50%;
+}
+
+button.accept {
+  background: #2a9971;
+  border-bottom-left-radius: 4px;
+}
+
+button.reject {
+  background: #b82e33;
+  border-bottom-right-radius: 4px;
+}
+
+button.done,
+button.disabled {
+  background: #333;
+  border-radius: 0 0 4px 4px;
+  width: 100%;
+}
+
+button.disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+button.accept:hover,
+button.reject:hover, 
+button.done:hover {
+  opacity: 0.8;
 }
 
 /* Footer */

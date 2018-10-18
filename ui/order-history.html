@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="assets/js/jwt-decode.min.js"></script>
+  <script src="assets/js/auth.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="assets/main.css">
   <title>Order History</title>
@@ -24,31 +26,7 @@
 
   <div class="wrapper">
     <section class="container order-history">
-      <div class="order-card">
-        <h3>Burger</h3>
-        <p>Purchased: 05-06-2018</p>
-        <p><span class="order-status-progress"></span></p>
-      </div>
-      <div class="order-card">
-        <h3>Shrimps</h3>
-        <p>Purchased: 05-06-2018</p>
-        <p><span class="order-status-completed"></span></p>
-      </div>
-      <div class="order-card">
-        <h3>Spiced Turkey</h3>
-        <p>Purchased: 01-06-2018</p>
-        <p><span class="order-status-completed"></span></p>
-      </div>
-      <div class="order-card">
-        <h3>Burger</h3>
-        <p>Purchased: 30-05-2018</p>
-        <p><span class="order-status-rejected"></span></p>
-      </div>
-      <div class="order-card">
-        <h3>Chicken & Chips</h3>
-        <p>Purchased: 30-05-2018</p>
-        <p><span class="order-status-completed"></span></p>
-      </div>
+      <p>Loading orders ...</p>
     </section>
   </div>
 
@@ -62,5 +40,6 @@
   </footer>
 
   <script src="assets/main.js"></script>
+  <script src="assets/js/customerOrderHistory.js"></script>
 </body>
 </html>
