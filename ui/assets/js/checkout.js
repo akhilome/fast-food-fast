@@ -20,15 +20,16 @@ const orderPrice = () => {
     .map(price => Number(price.split(',').join('').substr(1)))
     .reduce((accum, current) => accum + current)
     .toLocaleString();
-}
+};
 
 // Populate Cart Items on Page Load
 (() => {
   const cartItems = JSON.parse(localStorage.getItem('cart')) || {};
-  if(!Object.keys(cartItems).length) {
+  if (!Object.keys(cartItems).length) {
     document.querySelector('#checkout').remove();
     document.querySelector('.order-price').remove();
-    return document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
+    document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
+    return;
   }
 
   const formatted = Object.keys(cartItems)
@@ -39,7 +40,7 @@ const orderPrice = () => {
 })();
 
 // Removing items from cart
-const removeButtons = document.querySelectorAll('.food-card-checkout > button')
+const removeButtons = document.querySelectorAll('.food-card-checkout > button');
 
 function removeFromCart() {
   const cart = JSON.parse(localStorage.getItem('cart'));
@@ -52,7 +53,8 @@ function removeFromCart() {
   if (!Object.keys(cart).length) {
     document.querySelector('.order-price').remove();
     document.querySelector('#checkout').remove();
-    return document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
+    document.querySelector('section.checkout').innerHTML = '<div>No items in cart!</div>';
+    return;
   }
 
   foodCard.remove();
@@ -62,7 +64,7 @@ function removeFromCart() {
 removeButtons.forEach(button => button.addEventListener('click', removeFromCart));
 
 // Initiate actual checkout
-let wrapper = document.querySelector('.wrapper');
+const wrapper = document.querySelector('.wrapper');
 
 function buyFoodItems(e) {
   if (!e.target.matches('#checkout')) return;
@@ -77,20 +79,20 @@ function buyFoodItems(e) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-auth': token
+      'x-auth': token,
     },
-    body: JSON.stringify({ foodIds })
+    body: JSON.stringify({ foodIds }),
   })
     .then(data => data.json())
-    .then(response => {
+    .then((response) => {
       if (response.status !== 'success') return flashMessage(response.message, 'error');
-      flashMessage('Order placed!', 'success');
       localStorage.removeItem('cart');
       setTimeout(() => {
         window.location = 'order-history.html';
       }, 2000);
+      return flashMessage('Order placed!', 'success');
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       flashMessage('Something went wrong while placing your order', 'error');
     });

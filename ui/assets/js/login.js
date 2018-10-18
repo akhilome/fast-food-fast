@@ -12,11 +12,11 @@ function loginUser(e) {
   fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data)
-  }).then(data => data.json())
-    .then(response => {
+    body: JSON.stringify(data),
+  }).then(res => res.json())
+    .then((response) => {
       if (response.status !== 'success') {
         return flashMessage(response.message, 'error');
       }
@@ -26,8 +26,9 @@ function loginUser(e) {
       const decoded = jwt_decode(user.auth_token);
 
       window.location = decoded.userStatus === 'admin' ? 'orders.html' : 'menu.html';
+      return flashMessage('redirecting ...');
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       flashMessage('There was a problem logging you in', 'error');
     });

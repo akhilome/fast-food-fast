@@ -8,7 +8,8 @@ function addToCart(e) {
     jwt_decode(token);
     if (!token) throw new Error();
   } catch (error) {
-    return window.location = 'sign-in.html';
+    window.location = 'sign-in.html';
+    return;
   }
 
 
@@ -16,14 +17,15 @@ function addToCart(e) {
 
   const foodDetails = button.parentNode.previousElementSibling;
   const foodImage = foodDetails.parentNode.previousElementSibling.src;
-  const foodId = foodDetails.dataset.foodid
+  const foodId = foodDetails.dataset.foodid;
   const foodName = foodDetails.querySelector('h4').innerText;
   const foodPrice = foodDetails.querySelector('p').innerText;
-  
-  if(!cart.hasOwnProperty(foodId)) {
-    cart[foodId] = { foodName, foodPrice, foodImage }
+
+  if (!Object.keys(cart).includes(foodId)) {
+    cart[foodId] = { foodName, foodPrice, foodImage };
   } else {
-    return flashMessage('Item already in cart', 'error');
+    flashMessage('Item already in cart', 'error');
+    return;
   }
 
   localStorage.setItem('cart', JSON.stringify(cart));
