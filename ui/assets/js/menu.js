@@ -1,3 +1,13 @@
+// Confirm which user is accessing the page
+let isAdmin;
+try {
+  const authToken = localStorage.getItem('kiakiafoodToken');
+  const { userStatus } = (jwt_decode(authToken));
+  isAdmin = userStatus === 'admin';
+} catch (error) {
+  console.error(error.message);
+}
+
 function foodCardBlueprint(id, foodName, foodImage, foodPrice) {
   return `
   <div class="food-card">
@@ -8,7 +18,7 @@ function foodCardBlueprint(id, foodName, foodImage, foodPrice) {
         <p>₦${foodPrice.toLocaleString()}</p>
       </div>
       <div class="food-details__action">
-        <button>buy</button>
+        <button>${isAdmin ? 'delete' : 'buy'}</button>
       </div>
     </div>
   </div>
@@ -24,7 +34,7 @@ fetch(source)
       .map(food => foodCardBlueprint(food.id, food.food_name, food.food_image, food.price))
       .join('');
 
-    document.querySelector('section.food-menu').innerHTML = foodItems;
+    document.querySelector('.container').innerHTML = foodItems;
   })
   .catch((error) => {
     document.querySelector('section.food-menu').innerHTML = '';
