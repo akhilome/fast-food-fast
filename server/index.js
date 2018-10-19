@@ -13,11 +13,8 @@ const app = express();
 // Enable CORS
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Welcome. API is live at /api/v1/',
-  });
-});
+// Serve ui templates
+app.use(express.static('ui'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
