@@ -23,5 +23,4 @@ function deleteFoodItem(e) {
     });
 }
 
-
 document.querySelector('.admin-menu').addEventListener('click', deleteFoodItem);

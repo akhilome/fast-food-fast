@@ -1,4 +1,4 @@
-// Confirm which user is access the page
+// Confirm which user is accessing the page
 let isAdmin;
 try {
   const authToken = localStorage.getItem('kiakiafoodToken');
