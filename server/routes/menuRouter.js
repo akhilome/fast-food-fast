@@ -13,5 +13,6 @@ router.post(
   Sanitize.addFood,
   MenuController.addFood,
 );
+router.delete('/:id', AuthHandler.authorize, AuthHandler.authorizeAdmin, MenuController.deleteFood);
 
 export default router;

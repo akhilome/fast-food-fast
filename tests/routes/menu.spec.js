@@ -3,7 +3,7 @@ import 'chai/register-should';
 import chaiHttp from 'chai-http';
 
 import app from '../../server/index';
-import { users, generateValidToken } from '../seed/seed';
+import { users, populateMenu, generateValidToken } from '../seed/seed';
 
 chai.use(chaiHttp);
 
@@ -125,6 +125,75 @@ describe('GET /menu', () => {
         res.body.message.should.eql('menu fetched successfully');
         res.body.menu.should.be.an('array');
         res.body.menu.length.should.eql(2);
+        done();
+      });
+  });
+});
+
+describe('DELETE /menu/:id', () => {
+  before(populateMenu);
+
+  it('should not delete food if user not authenticated', (done) => {
+    chai.request(app)
+      .del('/api/v1/menu/3')
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(401);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+
+  it('should not delete food if user not an admin', (done) => {
+    chai.request(app)
+      .del('/api/v1/menu/3')
+      .set('x-auth', generateValidToken(users.validUser))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(403);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+
+  it('should delete food item if user is admin', (done) => {
+    chai.request(app)
+      .del('/api/v1/menu/3')
+      .set('x-auth', generateValidToken(users.admin))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(200);
+        res.body.should.be.an('object');
+        res.body.status.should.eql('success');
+        done();
+      });
+  });
+
+  it('should not delete non-existent food item', (done) => {
+    chai.request(app)
+      .del('/api/v1/menu/30000')
+      .set('x-auth', generateValidToken(users.admin))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(404);
+        res.body.status.should.eql('error');
+        done();
+      });
+  });
+
+  it('should not allow invalid food ids', (done) => {
+    chai.request(app)
+      .del('/api/v1/menu/hahaha')
+      .set('x-auth', generateValidToken(users.admin))
+      .end((err, res) => {
+        if (err) done(err);
+
+        res.status.should.eql(400);
+        res.body.status.should.eql('error');
         done();
       });
   });
