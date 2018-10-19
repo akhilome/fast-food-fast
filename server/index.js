@@ -13,6 +13,9 @@ const app = express();
 // Enable CORS
 app.use(cors());
 
+// Serve ui templates
+app.use(express.static('ui'));
+
 app.get('/', (req, res) => {
   res.status(200).json({
     message: 'Welcome. API is live at /api/v1/',
