@@ -58,6 +58,12 @@ const users = {
   },
 };
 
+/**
+ * @function generateValidToken - generates a valid JWT based on the user details
+ * object passed in
+ * @param {Object} userObject - the details of the user
+ * @returns {String} - a valid, signed, JSON Web Token
+ */
 function generateValidToken(userObject) {
   return jwt.sign({
     userId: userObject.id,
@@ -67,6 +73,10 @@ function generateValidToken(userObject) {
   }, process.env.JWT_SECRET).toString();
 }
 
+/**
+ * @async
+ * @function emptyTables - purges the database data
+ */
 const emptyTables = async () => {
   const dropUsersTableQuery = 'DROP TABLE IF EXISTS users CASCADE';
   const dropMenuTableQuery = 'DROP TABLE IF EXISTS menu CASCADE';
@@ -104,6 +114,10 @@ const emptyTables = async () => {
   await pool.query(createOrdersTableQuery);
 };
 
+/**
+ * @async
+ * @function populateMenu - adds two food items to the database
+ */
 const populateMenu = async () => {
   const dbQuery = `INSERT INTO menu(food_name, price)
     VALUES
