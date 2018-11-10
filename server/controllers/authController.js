@@ -1,7 +1,17 @@
 import bcrpyt from 'bcryptjs';
 import pool from '../db/config';
 
+/**
+ * @class Authentication and Authorization Controller
+ */
 class AuthController {
+  /**
+   * handles adding new users to the database
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {Object} - next: passes execution to the next middleware
+   */
   static async signup(req, res, next) {
     const {
       name,
@@ -30,6 +40,13 @@ class AuthController {
     }
   }
 
+  /**
+   * handles confirming user existense in the database
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {Object} - next: passes execution to the next middleware
+   */
   static async signin(req, res, next) {
     const { email, password } = req;
     const errResponse = {

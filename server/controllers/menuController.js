@@ -1,6 +1,15 @@
 import pool from '../db/config';
 
+/**
+ * @class Menu Controller
+ */
 class MenuController {
+  /**
+   * handles fetching all available food items from the database
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async getMenu(req, res) {
     try {
       const menu = (await pool.query('SELECT * FROM menu')).rows;
@@ -15,6 +24,12 @@ class MenuController {
     }
   }
 
+  /**
+   * hanldes adding new food items to the database
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async addFood(req, res) {
     const { foodName, foodImage, price } = req;
     try {
@@ -31,6 +46,12 @@ class MenuController {
     }
   }
 
+  /**
+   * hnadles the removal of food items from the database
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async deleteFood(req, res) {
     const { id } = req.params;
 

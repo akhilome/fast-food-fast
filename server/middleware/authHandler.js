@@ -3,7 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+/**
+ * @class Authentication and Authorization handler
+ */
 class AuthHandler {
+  /**
+   * handles generation of valid JWTs
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async generateAuthToken(req, res) {
     const {
       userId,
@@ -29,6 +38,14 @@ class AuthHandler {
     });
   }
 
+  /**
+   * confirms that the JWT bundled with the request is a valid on
+   * plus prevents request with a valid JWT from moving forward
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {Object}
+   */
   static authorize(req, res, next) {
     const token = req.header('x-auth');
 
@@ -47,6 +64,13 @@ class AuthHandler {
     }
   }
 
+  /**
+   * prevents JWTs which do not have an 'admin' user status from going forward
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {Object}
+   */
   static authorizeAdmin(req, res, next) {
     if (req.userStatus !== 'admin') {
       return res.status(403).json({

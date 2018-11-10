@@ -1,7 +1,17 @@
 import pool from '../db/config';
 import orderFormatter from '../middleware/formatter';
 
+/**
+ * @class Order Controller
+ */
 class OrderController {
+  /**
+   * Get all placed orders
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object} - response object containing the status of the
+   * request and all user orders, if any
+   */
   static async getAllOrders(req, res) {
     try {
       const dbQuery = 'SELECT orders.id, orders.items, orders.price, users.name, orders.date, orders.status FROM orders JOIN users ON orders.author = users.id';
@@ -18,6 +28,12 @@ class OrderController {
     }
   }
 
+  /**
+   * Get the details of a single order
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async getOrder(req, res) {
     const { id } = req.params;
 
@@ -43,6 +59,12 @@ class OrderController {
     }
   }
 
+  /**
+   * place a new order to the API
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async newOrder(req, res) {
     const { foodItems, foodItemsTotalPrice } = req;
 
@@ -64,6 +86,12 @@ class OrderController {
     }
   }
 
+  /**
+   * update the status of an order
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async updateOrder(req, res) {
     const { id } = req.params;
     if (!Number(id)) return res.status(400).json({ status: 'error', message: 'invalid order id provided' });
@@ -87,6 +115,12 @@ class OrderController {
     }
   }
 
+  /**
+   * get the all orders placed by all users
+   * @param {*} req
+   * @param {*} res
+   * @returns {Object}
+   */
   static async getAllUserOrders(req, res) {
     const { id } = req.params;
     if (Number.isNaN(Number(id))) return res.status(400).json({ status: 'error', message: 'invalid user id' });

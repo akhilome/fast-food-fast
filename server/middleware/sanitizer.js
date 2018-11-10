@@ -1,6 +1,15 @@
 import Validator from '../validators/validator';
 
+/**
+ * @class Sanitization middleware
+ */
 class Sanitize {
+  /**
+   * Santizes user signup requests
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   static signup(req, res, next) {
     const {
       name,
@@ -41,6 +50,12 @@ class Sanitize {
     return next();
   }
 
+  /**
+   * Sanitizes user email and provided password on every login request
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   static signin(req, res, next) {
     const { email, password } = req.body;
 
@@ -82,6 +97,12 @@ class Sanitize {
     return next();
   }
 
+  /**
+   * Sanitizes food name, food image url, and food price for add food requests
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   static addFood(req, res, next) {
     const { foodName, foodImage, price } = req.body;
 
@@ -105,6 +126,12 @@ class Sanitize {
     return next();
   }
 
+  /**
+   * Sanitizes provided array of food ids when making a new order request
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   static async newOrder(req, res, next) {
     const { foodIds } = req.body;
 
