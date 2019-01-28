@@ -7,7 +7,14 @@ const router = new Router();
 
 router.get('/users/:id/orders', AuthHandler.authorize, OrderController.getAllUserOrders);
 router.post('/orders', AuthHandler.authorize, Sanitize.newOrder, OrderController.newOrder);
-router.get('/orders', AuthHandler.authorize, AuthHandler.authorizeAdmin, OrderController.getAllOrders);
+router.delete('/orders/:orderId', AuthHandler.authorize, OrderController.cancelOrder);
+
+router.get(
+  '/orders',
+  AuthHandler.authorize,
+  AuthHandler.authorizeAdmin,
+  OrderController.getAllOrders,
+);
 
 router.get(
   '/orders/:id',
