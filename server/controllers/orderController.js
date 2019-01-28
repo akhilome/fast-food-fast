@@ -155,6 +155,25 @@ class OrderController {
       return res.status(500).json({ error });
     }
   }
+
+  static async cancelOrder(req, res) {
+    const {
+      params: { orderId },
+    } = req;
+    if (Number.isNaN(Number(orderId))) return res.status(400).json({ status: 'error', message: 'order id must be a number' });
+    try {
+      const orderDetails = await pool.query('SELECT * FROM orders WHERE id=$1', [orderId]);
+      if (!orderDetails.rowCount) return res.status(404).json({ status: 'error', message: 'no such order exists' });
+      if (orderDetails.rows[0].author !== req.userId) return res.status(403).json({ status: 'error', message: 'you are not allowed to do that' });
+      await pool.query('DELETE FROM orders WHERE id=$1', [orderId]);
+      return res.status(204).json({
+        status: 'success',
+        message: 'order cancelled',
+      });
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
 }
 
 export default OrderController;
