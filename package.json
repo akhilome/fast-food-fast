@@ -16,9 +16,6 @@
     "setup-testdb": "echo 'DROP DATABASE IF EXISTS fastfoodfast_test;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast_test;' | psql -U postgres",
     "seed-db": "psql -U postgres fastfoodfast < ./server/db/seed.sql"
   },
-  "engines": {
-    "node": "8.12.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/akhilome/fast-food-fast.git"
