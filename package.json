@@ -4,7 +4,7 @@
   "description": "A food delivery service app",
   "main": "./server/index.js",
   "scripts": {
-    "start": "npm run build && node ./dist/index.js",
+    "start": "yarn build && node ./dist/index.js",
     "build": "babel ./server -d dist",
     "test": "export NODE_ENV=test && nyc --reporter=lcov mocha --recursive ./tests/* --require babel-register --exit",
     "cover": "nyc report --reporter=text-lcov | coveralls",
@@ -12,7 +12,7 @@
     "dev": "nodemon --exec babel-node ./server/index.js",
     "purge-db": "echo 'DROP DATABASE IF EXISTS fastfoodfast;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast;' | psql -U postgres",
     "setup-schema": "psql -U postgres fastfoodfast < ./server/db/schema.sql",
-    "config-db": "npm run purge-db && npm run setup-schema",
+    "config-db": "yarn purge-db && yarn setup-schema",
     "setup-testdb": "echo 'DROP DATABASE IF EXISTS fastfoodfast_test;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast_test;' | psql -U postgres",
     "seed-db": "psql -U postgres fastfoodfast < ./server/db/seed.sql",
     "sync-env": "sync-dotenv --sample .env.example"
