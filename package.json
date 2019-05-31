@@ -14,7 +14,13 @@
     "setup-schema": "psql -U postgres fastfoodfast < ./server/db/schema.sql",
     "config-db": "npm run purge-db && npm run setup-schema",
     "setup-testdb": "echo 'DROP DATABASE IF EXISTS fastfoodfast_test;' | psql -U postgres && echo 'CREATE DATABASE fastfoodfast_test;' | psql -U postgres",
-    "seed-db": "psql -U postgres fastfoodfast < ./server/db/seed.sql"
+    "seed-db": "psql -U postgres fastfoodfast < ./server/db/seed.sql",
+    "sync-env": "sync-dotenv --sample .env.example"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn sync-env"
+    }
   },
   "repository": {
     "type": "git",
@@ -45,8 +51,10 @@
     "eslint": "^5.5.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "husky": "^2.3.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.4",
-    "nyc": "^13.0.1"
+    "nyc": "^13.0.1",
+    "sync-dotenv": "^2.1.0"
   }
 }
